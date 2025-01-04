@@ -16,11 +16,18 @@ class AppLocalizations {
       _AppLocalizationsDelegate();
 
   Future<void> load() async {
-    // Load common translations
-    String commonJsonString = await rootBundle.loadString(
-      'assets/translations/${locale.languageCode}.json',
-    );
-    _translations = json.decode(commonJsonString);
+    _translations = {};
+
+    // Load about translations first
+    try {
+      String aboutJsonString = await rootBundle.loadString(
+        'assets/translations/about/${locale.languageCode}.json',
+      );
+      print('About translations loaded: $aboutJsonString'); // Debug print
+      _translations = json.decode(aboutJsonString);
+    } catch (e) {
+      print('Error loading about translations: $e');
+    }
 
     // Load home translations
     try {
@@ -33,27 +40,34 @@ class AppLocalizations {
       print('Error loading home translations: $e');
     }
 
-    // Load about translations
+    // Load common translations last
     try {
-      String aboutJsonString = await rootBundle.loadString(
-        'assets/translations/about/${locale.languageCode}.json',
+      String commonJsonString = await rootBundle.loadString(
+        'assets/translations/${locale.languageCode}.json',
       );
-      Map<String, dynamic> aboutTranslations = json.decode(aboutJsonString);
-      _translations.addAll(aboutTranslations);
+      Map<String, dynamic> commonTranslations = json.decode(commonJsonString);
+      _translations.addAll(commonTranslations);
     } catch (e) {
-      print('Error loading about translations: $e');
+      print('Error loading common translations: $e');
     }
+
+    print('Final translations: $_translations'); // Debug print
   }
 
   String translate(String key) {
+    print('Translating key: $key'); // Debug print
+    print('Available translations: $_translations'); // Debug print
+    
     List<String> keys = key.split('.');
     dynamic value = _translations;
 
     for (String k in keys) {
+      print('Looking up key: $k in $value'); // Debug print
       if (value is Map && value.containsKey(k)) {
         value = value[k];
       } else {
-        return key; // Return the key if translation is not found
+        print('Translation not found for key: $key'); // Debug print
+        return key;
       }
     }
 
