@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_first_app/screens/signup_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -90,12 +91,14 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
           ),
 
           // Back button
-          Positioned(
-            top: MediaQuery.of(context).padding.top + 10,
-            left: 16,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
-              onPressed: () => Navigator.pop(context),
+          SafeArea(
+            child: Positioned(
+              top: 10,
+              left: 16,
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () => Navigator.pop(context),
+              ),
             ),
           ),
 
@@ -198,7 +201,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                       return null;
                                     },
                                   ),
-                                  const SizedBox(height: 24),
+                                  const SizedBox(height: 16),
 
                                   // Password field
                                   TextFormField(
@@ -215,10 +218,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                       suffixIcon: IconButton(
                                         icon: Icon(
                                           _isPasswordVisible
-                                              ? FontAwesomeIcons.eye
-                                              : FontAwesomeIcons.eyeSlash,
-                                          size: 20,
-                                          color: Colors.grey[600],
+                                              ? Icons.visibility_off
+                                              : Icons.visibility,
+                                          color: theme.primaryColor,
                                         ),
                                         onPressed: () {
                                           setState(() {
@@ -253,51 +255,33 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 16),
-
-                            // Forgot Password
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                onPressed: () {
-                                  // Handle forgot password
-                                },
-                                child: Text(
-                                  'Forgot Password?',
-                                  style: TextStyle(
-                                    color: theme.primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
                             const SizedBox(height: 24),
 
-                            // Login Button
+                            // Login button
                             SizedBox(
                               width: double.infinity,
-                              height: 56,
                               child: ElevatedButton(
-                                onPressed: _isLoading ? null : _handleLogin,
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: theme.primaryColor,
-                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(vertical: 16),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                                  elevation: 2,
                                 ),
+                                onPressed: _isLoading ? null : _handleLogin,
                                 child: _isLoading
                                     ? const SizedBox(
-                                        height: 24,
-                                        width: 24,
+                                        height: 20,
+                                        width: 20,
                                         child: CircularProgressIndicator(
-                                          color: Colors.white,
                                           strokeWidth: 2,
+                                          valueColor: AlwaysStoppedAnimation<Color>(
+                                            Colors.white,
+                                          ),
                                         ),
                                       )
                                     : const Text(
-                                        'Sign In',
+                                        'Login',
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
@@ -305,21 +289,26 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                       ),
                               ),
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: 16),
 
-                            // Sign up link
+                            // Sign up text
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Don\'t have an account? ',
+                                  "Don't have an account? ",
                                   style: TextStyle(
                                     color: Colors.grey[600],
                                   ),
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    // Handle sign up
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const SignupScreen(),
+                                      ),
+                                    );
                                   },
                                   child: Text(
                                     'Sign Up',
