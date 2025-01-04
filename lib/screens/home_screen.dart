@@ -105,12 +105,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               leading: const Icon(Icons.person),
               title: const Text('Profile'),
               onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
+                Navigator.pop(context); // Close drawer
+                Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const ProfileScreen(),
-                  ),
+                  MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                  (route) => false,
                 );
               },
             ),
