@@ -9,13 +9,20 @@ import 'team_screen.dart';
 import 'about_screen.dart';
 import '../widgets/language_selector.dart';
 
-class MainNavigationScreen extends StatelessWidget {
+class MainNavigationScreen extends StatefulWidget {
   final Function(Locale) onLocaleChange;
 
   const MainNavigationScreen({
     super.key,
     required this.onLocaleChange,
   });
+
+  @override
+  State<MainNavigationScreen> createState() => _MainNavigationScreenState();
+}
+
+class _MainNavigationScreenState extends State<MainNavigationScreen> {
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +33,10 @@ class MainNavigationScreen extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
-          LanguageSelector(onLocaleChange: onLocaleChange),
+          LanguageSelector(
+            onLocaleChange: widget.onLocaleChange,
+            isDark: _currentIndex == 1, // Dark theme for About screen
+          ),
           const SizedBox(width: 10),
         ],
       ),
@@ -117,8 +127,11 @@ class MainNavigationScreen extends StatelessWidget {
             label: tr('navigation.settings'),
           ),
         ],
-        currentIndex: 0,
+        currentIndex: _currentIndex,
         onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
           if (index == 0) {
             Navigator.pushReplacement(
               context,

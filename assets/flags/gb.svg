@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="640px" height="480px" viewBox="0 0 640 480" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <clipPath id="s">
+            <path d="M-85.3,0H85.3V512H-85.3z" transform="translate(85.3)" id="path2"/>
+        </clipPath>
+    </defs>
+    <g clip-path="url(#s)" transform="scale(.9375)">
+        <g>
+            <path fill="#012169" d="M-85.3,0H85.3V512H-85.3z" transform="translate(85.3)"/>
+            <path d="M-85.3,0H85.3" stroke="#fff" stroke-width="102.4" transform="translate(85.3,256)"/>
+            <path d="M0,0V512" stroke="#fff" stroke-width="102.4" transform="translate(85.3)"/>
+            <path d="M-85.3,0H85.3" stroke="#c8102e" stroke-width="61.4" transform="translate(85.3,256)"/>
+            <path d="M0,0V512" stroke="#c8102e" stroke-width="61.4" transform="translate(85.3)"/>
+        </g>
+    </g>
+</svg>

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import '../widgets/language_selector.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -20,6 +21,13 @@ class AboutScreen extends StatelessWidget {
           style: const TextStyle(fontSize: 20),
         ),
         elevation: 0,
+        actions: [
+          LanguageSelector(
+            onLocaleChange: (locale) => context.setLocale(locale),
+            isDark: true,
+          ),
+          const SizedBox(width: 10),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(

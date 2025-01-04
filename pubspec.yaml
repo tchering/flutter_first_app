@@ -15,6 +15,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   font_awesome_flutter: ^10.6.0
   easy_localization: ^3.0.7
+  flutter_svg: ^2.0.9
 
 dev_dependencies:
   flutter_test:
@@ -27,3 +28,4 @@ flutter:
     - assets/translations/
     - assets/translations/en.json
     - assets/translations/fr.json
+    - assets/flags/

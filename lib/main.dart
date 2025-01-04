@@ -9,12 +9,12 @@ void main() async {
 
   runApp(EasyLocalization(
     supportedLocales: const [
-      Locale('en'),
       Locale('fr'),
+      Locale('en'),
     ],
-    path: 'assets/translations', // Make sure this directory exists
-    fallbackLocale: const Locale('en'),
-    startLocale: const Locale('en'),
+    path: 'assets/translations',
+    fallbackLocale: const Locale('fr'),
+    startLocale: const Locale('fr'),
     useOnlyLangCode: true,
     child: const MyApp(),
   ));
