@@ -16,20 +16,20 @@ class LanguageSelector extends StatelessWidget {
         onLocaleChange(Locale(value));
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-        PopupMenuItem<String>(
+        const PopupMenuItem<String>(
           value: 'en',
           child: Row(
-            children: const [
+            children: [
               Text('🇬🇧'), // English flag emoji
               SizedBox(width: 10),
               Text('English'),
             ],
           ),
         ),
-        PopupMenuItem<String>(
+        const PopupMenuItem<String>(
           value: 'fr',
           child: Row(
-            children: const [
+            children: [
               Text('🇫🇷'), // French flag emoji
               SizedBox(width: 10),
               Text('Français'),

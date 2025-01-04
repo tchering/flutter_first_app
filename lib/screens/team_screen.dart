@@ -40,13 +40,13 @@ class TeamScreen extends StatelessWidget {
                           // Profile Header
                           Container(
                             height: 200,
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                                 colors: [Color(0xFF1A237E), Color(0xFF0D47A1)],
                               ),
-                              borderRadius: const BorderRadius.vertical(
+                              borderRadius: BorderRadius.vertical(
                                 top: Radius.circular(20),
                               ),
                             ),

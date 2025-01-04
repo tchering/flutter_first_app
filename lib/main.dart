@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'screens/main_navigation_screen.dart';
+import 'screens/signup_screen.dart';
 import 'l10n/app_localizations.dart';
 
 void main() {
@@ -42,6 +43,9 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      routes: {
+        '/signup': (context) => const SignupScreen(),
+      },
       home: MainNavigationScreen(
         onLocaleChange: setLocale,
       ),

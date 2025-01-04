@@ -18,15 +18,15 @@ class SettingsScreen extends StatelessWidget {
               title: const Text('Dark Mode'),
               trailing: Switch(value: false, onChanged: (value) {}),
             ),
-            ListTile(
-              leading: const Icon(Icons.language),
-              title: const Text('Language'),
-              trailing: const Icon(Icons.arrow_forward_ios),
+            const ListTile(
+              leading: Icon(Icons.language),
+              title: Text('Language'),
+              trailing: Icon(Icons.arrow_forward_ios),
             ),
-            ListTile(
-              leading: const Icon(Icons.notifications),
-              title: const Text('Notifications'),
-              trailing: const Icon(Icons.arrow_forward_ios),
+            const ListTile(
+              leading: Icon(Icons.notifications),
+              title: Text('Notifications'),
+              trailing: Icon(Icons.arrow_forward_ios),
             ),
           ],
         ).toList(),

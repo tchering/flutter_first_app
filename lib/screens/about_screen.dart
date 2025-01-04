@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmallScreen = screenWidth < 600;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('About Us'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          localizations.translate('mission.title'),
+          style: const TextStyle(fontSize: 20),
+        ),
+        elevation: 0,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -15,126 +28,117 @@ class AboutScreen extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              const Color(0xFFF5F7FA),
-              const Color(0xFFC3CFE2),
+              Colors.grey[50]!,
+              Colors.grey[100]!,
             ],
           ),
         ),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.symmetric(
+            horizontal: isSmallScreen ? 16.0 : screenWidth * 0.1,
+            vertical: 24.0,
+          ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image Section
-              Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.network(
-                    'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=500',
-                    height: 250,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
-
               // Mission Section
-              _buildCard(
-                title: 'Our Mission',
-                content: 'To revolutionize construction project management through innovative digital solutions.',
+              Text(
+                localizations.translate('mission.title'),
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
               ),
               const SizedBox(height: 16),
+              Text(
+                localizations.translate('mission.description'),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      height: 1.6,
+                      color: Colors.black54,
+                    ),
+              ),
+              const SizedBox(height: 40),
 
               // Solutions Section
-              Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Our Solutions',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Wrap(
-                        spacing: 16,
-                        runSpacing: 16,
-                        children: [
-                          _buildFeatureItem(
-                            icon: Icons.trending_up,
-                            title: 'Project Management',
-                            description: 'Streamlined project tracking and management tools',
-                          ),
-                          _buildFeatureItem(
-                            icon: Icons.business,
-                            title: 'Business Support',
-                            description: '24/7 dedicated support for your business needs',
-                          ),
-                          _buildFeatureItem(
-                            icon: Icons.location_on,
-                            title: 'Location Tracking',
-                            description: 'Real-time location tracking and mapping',
-                          ),
-                          _buildFeatureItem(
-                            icon: Icons.bar_chart,
-                            title: 'Financial Analytics',
-                            description: 'Comprehensive financial tracking and reporting',
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+              Text(
+                localizations.translate('solution.title'),
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
               ),
               const SizedBox(height: 24),
-
-              // Call to Action
-              Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    children: [
-                      const Text(
-                        'Transform your business management today',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          // Navigate to signup
-                          Navigator.pushNamed(context, '/signup');
-                        },
-                        icon: const Icon(Icons.rocket_launch),
-                        label: const Text('Get Started'),
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 32,
-                            vertical: 16,
-                          ),
-                        ),
-                      ),
-                    ],
+              Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                children: [
+                  _buildFeatureItem(
+                    context,
+                    icon: Icons.business,
+                    translationPrefix: 'solution.management',
+                    color: Colors.blue,
                   ),
+                  _buildFeatureItem(
+                    context,
+                    icon: Icons.support_agent,
+                    translationPrefix: 'solution.support',
+                    color: Colors.green,
+                  ),
+                  _buildFeatureItem(
+                    context,
+                    icon: Icons.location_on,
+                    translationPrefix: 'solution.location',
+                    color: Colors.orange,
+                  ),
+                  _buildFeatureItem(
+                    context,
+                    icon: Icons.analytics,
+                    translationPrefix: 'solution.finance',
+                    color: Colors.purple,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 48),
+              // Call to Action Section
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 32),
+                child: Column(
+                  children: [
+                    Text(
+                      localizations.translate('solution.cta.title'),
+                      style:
+                          Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black87,
+                              ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/signup');
+                      },
+                      icon: const Icon(Icons.rocket_launch),
+                      label: Text(
+                        localizations.translate('solution.cta.button'),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 32,
+                          vertical: 16,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 2,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -144,74 +148,43 @@ class AboutScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCard({required String title, required String content}) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              content,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFeatureItem({
+  Widget _buildFeatureItem(
+    BuildContext context, {
     required IconData icon,
-    required String title,
-    required String description,
+    required String translationPrefix,
+    required Color color,
   }) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmallScreen = screenWidth < 600;
+    final localizations = AppLocalizations.of(context);
+
     return Container(
-      width: 250,
-      padding: const EdgeInsets.all(16),
+      width: isSmallScreen ? double.infinity : 250,
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        border: Border(
-          left: BorderSide(
-            color: Colors.blue,
-            width: 4,
-          ),
-        ),
-        color: Colors.blue.withOpacity(0.05),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey[200]!),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: Colors.blue, size: 24),
+          Icon(icon, color: color, size: 24),
+          const SizedBox(height: 16),
+          Text(
+            localizations.translate('$translationPrefix.title'),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
+          ),
           const SizedBox(height: 8),
           Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            description,
-            style: TextStyle(
-              color: Colors.grey[600],
-              fontSize: 14,
-            ),
+            localizations.translate('$translationPrefix.description'),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  height: 1.5,
+                  color: Colors.black54,
+                ),
           ),
         ],
       ),
