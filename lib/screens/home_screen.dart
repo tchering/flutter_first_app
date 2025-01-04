@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../l10n/app_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'signup_screen.dart';
 import 'profile_screen.dart';
 import 'settings_screen.dart';
@@ -54,14 +54,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final isWideScreen = screenWidth > 800;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          localizations.translate('app.title'),
+          tr('app.title'),
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -74,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 color: Colors.blue,
               ),
               child: Text(
-                localizations.translate('app.title'),
+                tr('app.title'),
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -154,9 +153,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       if (constraints.maxWidth > 800) {
-                        return _buildWideHeroContent(context, localizations);
+                        return _buildWideHeroContent(context);
                       }
-                      return _buildNarrowHeroContent(context, localizations);
+                      return _buildNarrowHeroContent(context);
                     },
                   ),
                 ),
@@ -179,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       child: Column(
                         children: [
                           Text(
-                            localizations.translate('home.features.title'),
+                            tr('home.features.title'),
                             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,
@@ -188,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            localizations.translate('home.features.description'),
+                            tr('home.features.description'),
                             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               color: Colors.grey[600],
                               height: 1.5,
@@ -203,9 +202,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   LayoutBuilder(
                     builder: (context, constraints) {
                       if (constraints.maxWidth > 800) {
-                        return _buildWideFeatureCards(context, localizations);
+                        return _buildWideFeatureCards(context);
                       }
-                      return _buildNarrowFeatureCards(context, localizations);
+                      return _buildNarrowFeatureCards(context);
                     },
                   ),
                 ],
@@ -232,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               child: Column(
                 children: [
                   Text(
-                    'Ready to Transform Your Business?',
+                    tr('home.call_to_action.title'),
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -241,14 +240,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Join thousands of businesses that trust MiniDost',
+                    tr('home.call_to_action.description'),
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Colors.white.withOpacity(0.9),
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
-                  _buildCtaButton(context, localizations),
+                  _buildCtaButton(context),
                 ],
               ),
             ),
@@ -258,11 +257,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  Widget _buildWideHeroContent(BuildContext context, AppLocalizations localizations) {
+  Widget _buildWideHeroContent(BuildContext context) {
     return Row(
       children: [
         Expanded(
-          child: _buildHeroText(context, localizations),
+          child: _buildHeroText(context),
         ),
         const SizedBox(width: 48),
         Expanded(
@@ -272,17 +271,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  Widget _buildNarrowHeroContent(BuildContext context, AppLocalizations localizations) {
+  Widget _buildNarrowHeroContent(BuildContext context) {
     return Column(
       children: [
-        _buildHeroText(context, localizations),
+        _buildHeroText(context),
         const SizedBox(height: 48),
         _buildHeroImage(),
       ],
     );
   }
 
-  Widget _buildHeroText(BuildContext context, AppLocalizations localizations) {
+  Widget _buildHeroText(BuildContext context) {
     return FadeTransition(
       opacity: _fadeInAnimation,
       child: SlideTransition(
@@ -291,7 +290,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              localizations.translate('home.hero.title'),
+              tr('home.hero.title'),
               style: Theme.of(context).textTheme.displaySmall?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -300,7 +299,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ),
             const SizedBox(height: 24),
             Text(
-              localizations.translate('home.hero.subtitle'),
+              tr('home.hero.subtitle'),
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 color: Colors.white.withOpacity(0.9),
                 height: 1.5,
@@ -308,14 +307,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               ),
             ),
             const SizedBox(height: 40),
-            _buildCtaButton(context, localizations),
+            _buildCtaButton(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCtaButton(BuildContext context, AppLocalizations localizations) {
+  Widget _buildCtaButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
         Navigator.push(
@@ -341,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           const Icon(Icons.rocket_launch, size: 20),
           const SizedBox(width: 12),
           Text(
-            localizations.translate('home.hero.signup'),
+            tr('home.hero.signup'),
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -378,55 +377,55 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  Widget _buildWideFeatureCards(BuildContext context, AppLocalizations localizations) {
+  Widget _buildWideFeatureCards(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(child: _buildFeatureCard(
           icon: FontAwesomeIcons.chartLine,
-          title: localizations.translate('home.features.management.title'),
-          description: localizations.translate('home.features.management.description'),
+          title: tr('home.features.management.title'),
+          description: tr('home.features.management.description'),
           color: Colors.blue[700]!,
         )),
         const SizedBox(width: 24),
         Expanded(child: _buildFeatureCard(
           icon: FontAwesomeIcons.listCheck,
-          title: localizations.translate('home.features.organization.title'),
-          description: localizations.translate('home.features.organization.description'),
+          title: tr('home.features.organization.title'),
+          description: tr('home.features.organization.description'),
           color: Colors.green[600]!,
         )),
         const SizedBox(width: 24),
         Expanded(child: _buildFeatureCard(
           icon: FontAwesomeIcons.chartPie,
-          title: localizations.translate('home.features.analytics.title'),
-          description: localizations.translate('home.features.analytics.description'),
+          title: tr('home.features.analytics.title'),
+          description: tr('home.features.analytics.description'),
           color: Colors.purple[600]!,
         )),
       ],
     );
   }
 
-  Widget _buildNarrowFeatureCards(BuildContext context, AppLocalizations localizations) {
+  Widget _buildNarrowFeatureCards(BuildContext context) {
     return Column(
       children: [
         _buildFeatureCard(
           icon: FontAwesomeIcons.chartLine,
-          title: localizations.translate('home.features.management.title'),
-          description: localizations.translate('home.features.management.description'),
+          title: tr('home.features.management.title'),
+          description: tr('home.features.management.description'),
           color: Colors.blue[700]!,
         ),
         const SizedBox(height: 24),
         _buildFeatureCard(
           icon: FontAwesomeIcons.listCheck,
-          title: localizations.translate('home.features.organization.title'),
-          description: localizations.translate('home.features.organization.description'),
+          title: tr('home.features.organization.title'),
+          description: tr('home.features.organization.description'),
           color: Colors.green[600]!,
         ),
         const SizedBox(height: 24),
         _buildFeatureCard(
           icon: FontAwesomeIcons.chartPie,
-          title: localizations.translate('home.features.analytics.title'),
-          description: localizations.translate('home.features.analytics.description'),
+          title: tr('home.features.analytics.title'),
+          description: tr('home.features.analytics.description'),
           color: Colors.purple[600]!,
         ),
       ],

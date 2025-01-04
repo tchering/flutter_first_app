@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../l10n/app_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'home_screen.dart';
 import 'profile_screen.dart';
 import 'settings_screen.dart';
@@ -19,12 +19,10 @@ class MainNavigationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
-    
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          localizations.translate('app.title'),
+          tr('app.title'),
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
@@ -41,7 +39,7 @@ class MainNavigationScreen extends StatelessWidget {
                 color: Colors.blue,
               ),
               child: Text(
-                localizations.translate('app.title'),
+                tr('app.title'),
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -50,14 +48,14 @@ class MainNavigationScreen extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.home),
-              title: Text(localizations.translate('navigation.home')),
+              title: Text(tr('navigation.home')),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
               leading: const Icon(Icons.info),
-              title: Text(localizations.translate('navigation.about')),
+              title: Text(tr('navigation.about')),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -68,7 +66,7 @@ class MainNavigationScreen extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.people),
-              title: Text(localizations.translate('navigation.team')),
+              title: Text(tr('navigation.team')),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -80,7 +78,7 @@ class MainNavigationScreen extends StatelessWidget {
             const Divider(),
             ListTile(
               leading: const Icon(Icons.login),
-              title: Text(localizations.translate('navigation.login')),
+              title: Text(tr('navigation.login')),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -91,7 +89,7 @@ class MainNavigationScreen extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.person_add),
-              title: Text(localizations.translate('navigation.signup')),
+              title: Text(tr('navigation.signup')),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -108,15 +106,15 @@ class MainNavigationScreen extends StatelessWidget {
         items: [
           BottomNavigationBarItem(
             icon: const Icon(Icons.home),
-            label: localizations.translate('navigation.home'),
+            label: tr('navigation.home'),
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.person),
-            label: localizations.translate('navigation.profile'),
+            label: tr('navigation.profile'),
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.settings),
-            label: localizations.translate('navigation.settings'),
+            label: tr('navigation.settings'),
           ),
         ],
         currentIndex: 0,

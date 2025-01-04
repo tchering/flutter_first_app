@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../l10n/app_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'feature_card.dart';
 
 class FeaturesSection extends StatelessWidget {
@@ -7,8 +7,7 @@ class FeaturesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
-
+    final screenWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.grey[50],
       padding: const EdgeInsets.symmetric(
@@ -18,7 +17,7 @@ class FeaturesSection extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            localizations.translate('home.features.title'),
+            tr('home.features.title'),
             style: const TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
@@ -26,69 +25,64 @@ class FeaturesSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 48),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              if (constraints.maxWidth > 800) {
-                return _buildWideLayout(context, localizations);
-              }
-              return _buildNarrowLayout(context, localizations);
-            },
-          ),
+          screenWidth > 800
+              ? _buildWideLayout(context)
+              : _buildNarrowLayout(context),
         ],
       ),
     );
   }
 
-  Widget _buildWideLayout(BuildContext context, AppLocalizations localizations) {
+  Widget _buildWideLayout(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: FeatureCard(
             icon: Icons.show_chart,
-            title: localizations.translate('home.features.management.title'),
-            description: localizations.translate('home.features.management.description'),
+            title: tr('home.features.management.title'),
+            description: tr('home.features.management.description'),
           ),
         ),
         const SizedBox(width: 24),
         Expanded(
           child: FeatureCard(
             icon: Icons.task_alt,
-            title: localizations.translate('home.features.organization.title'),
-            description: localizations.translate('home.features.organization.description'),
+            title: tr('home.features.organization.title'),
+            description: tr('home.features.organization.description'),
           ),
         ),
         const SizedBox(width: 24),
         Expanded(
           child: FeatureCard(
             icon: Icons.analytics,
-            title: localizations.translate('home.features.analytics.title'),
-            description: localizations.translate('home.features.analytics.description'),
+            title: tr('home.features.analytics.title'),
+            description: tr('home.features.analytics.description'),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildNarrowLayout(BuildContext context, AppLocalizations localizations) {
+  Widget _buildNarrowLayout(BuildContext context) {
     return Column(
       children: [
         FeatureCard(
           icon: Icons.show_chart,
-          title: localizations.translate('home.features.management.title'),
-          description: localizations.translate('home.features.management.description'),
+          title: tr('home.features.management.title'),
+          description: tr('home.features.management.description'),
         ),
         const SizedBox(height: 24),
         FeatureCard(
           icon: Icons.task_alt,
-          title: localizations.translate('home.features.organization.title'),
-          description: localizations.translate('home.features.organization.description'),
+          title: tr('home.features.organization.title'),
+          description: tr('home.features.organization.description'),
         ),
         const SizedBox(height: 24),
         FeatureCard(
           icon: Icons.analytics,
-          title: localizations.translate('home.features.analytics.title'),
-          description: localizations.translate('home.features.analytics.description'),
+          title: tr('home.features.analytics.title'),
+          description: tr('home.features.analytics.description'),
         ),
       ],
     );

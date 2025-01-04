@@ -1,42 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ActivitySector {
-  static const Map<String, List<String>> sectors = {
-    "Interior Design & Finishing": [
-      "Building Cleaning Pro.",
-      "Interior Designer",
-      "Painter",
-      "Plasterer",
-      "Carpet Layer",
-      "Tile Setter",
-    ],
-    "Technical Equipment": [
-      "Electrician",
-      "Plumber",
-      "HVAC Installer",
-    ],
-    "Building Envelope": [
-      "Rope Access Technician",
-      "Roofer",
-      "Waterproofer",
-      "Metal Joinery",
-    ],
-    "Structure & Construction": [
-      "Wood Carpenter",
-      "Equipment Operator",
-      "Wood Constructor",
-      "Reinforced Concrete Constructor",
-      "Industrial Flooring Constructor",
-      "Metal Constructor",
-      "Demolition Expert",
-      "Crane Operator",
-      "Mason",
-      "Scaffolding Assembler",
-      "Lifting Equipment Assembler",
-      "Stone Cutter",
-    ],
-  };
+  static Map<String, List<String>> getSectors(BuildContext context) {
+    return {
+      tr('signup.sectors.interiorDesign.name'): [
+        tr('signup.sectors.interiorDesign.subsectors.buildingCleaning'),
+        tr('signup.sectors.interiorDesign.subsectors.interiorDesigner'),
+        tr('signup.sectors.interiorDesign.subsectors.painter'),
+        tr('signup.sectors.interiorDesign.subsectors.plasterer'),
+        tr('signup.sectors.interiorDesign.subsectors.carpetLayer'),
+        tr('signup.sectors.interiorDesign.subsectors.tileSetter'),
+      ],
+      tr('signup.sectors.technicalEquipment.name'): [
+        tr('signup.sectors.technicalEquipment.subsectors.electrician'),
+        tr('signup.sectors.technicalEquipment.subsectors.plumber'),
+        tr('signup.sectors.technicalEquipment.subsectors.hvacInstaller'),
+      ],
+      tr('signup.sectors.buildingEnvelope.name'): [
+        tr('signup.sectors.buildingEnvelope.subsectors.ropeAccessTechnician'),
+        tr('signup.sectors.buildingEnvelope.subsectors.roofer'),
+        tr('signup.sectors.buildingEnvelope.subsectors.waterproofer'),
+        tr('signup.sectors.buildingEnvelope.subsectors.metalJoinery'),
+      ],
+      tr('signup.sectors.structureConstruction.name'): [
+        tr('signup.sectors.structureConstruction.subsectors.woodCarpenter'),
+        tr('signup.sectors.structureConstruction.subsectors.equipmentOperator'),
+        tr('signup.sectors.structureConstruction.subsectors.woodConstructor'),
+        tr('signup.sectors.structureConstruction.subsectors.concreteConstructor'),
+        tr('signup.sectors.structureConstruction.subsectors.flooringConstructor'),
+        tr('signup.sectors.structureConstruction.subsectors.metalConstructor'),
+        tr('signup.sectors.structureConstruction.subsectors.demolitionExpert'),
+        tr('signup.sectors.structureConstruction.subsectors.craneOperator'),
+        tr('signup.sectors.structureConstruction.subsectors.mason'),
+        tr('signup.sectors.structureConstruction.subsectors.scaffoldingAssembler'),
+        tr('signup.sectors.structureConstruction.subsectors.liftingEquipmentAssembler'),
+        tr('signup.sectors.structureConstruction.subsectors.stoneCutter'),
+      ],
+    };
+  }
 }
 
 class SignupScreen extends StatefulWidget {
@@ -220,8 +223,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                               // Title
                               Text(
                                 isCompanyInfoStep
-                                    ? 'Company Information'
-                                    : 'Personal Information',
+                                    ? tr('signup.step1')
+                                    : tr('signup.step2'),
                                 style: theme.textTheme.headlineSmall?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black87,
@@ -230,8 +233,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                               const SizedBox(height: 8),
                               Text(
                                 isCompanyInfoStep
-                                    ? 'Step 1 of 2'
-                                    : 'Step 2 of 2',
+                                    ? tr('signup.step1of2')
+                                    : tr('signup.step2of2'),
                                 style: theme.textTheme.bodyLarge?.copyWith(
                                   color: Colors.grey[600],
                                 ),
@@ -259,7 +262,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                   ),
                                   onPressed: isCompanyInfoStep ? _moveToNextStep : _submitForm,
                                   child: Text(
-                                    isCompanyInfoStep ? 'Next' : 'Create Account',
+                                    isCompanyInfoStep ? tr('signup.buttons.next') : tr('signup.buttons.submit'),
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -273,7 +276,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                 TextButton(
                                   onPressed: _moveToPreviousStep,
                                   child: Text(
-                                    'Back to Company Information',
+                                    tr('signup.buttons.back'),
                                     style: TextStyle(color: theme.primaryColor),
                                   ),
                                 ),
@@ -312,34 +315,34 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
     return Column(
       children: [
         _buildDropdownField(
-          'Legal Status',
+          tr('signup.company.legalStatus'),
           ['SARL', 'EURL', 'SA', 'SAS', 'Auto-entrepreneur'],
           controller: _legalStatusController,
           icon: FontAwesomeIcons.buildingColumns,
           theme: theme,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select legal status';
+              return tr('signup.validation.required');
             }
             return null;
           },
         ),
         const SizedBox(height: 16),
         _buildTextField(
-          'Company Name',
+          tr('signup.company.companyName'),
           controller: _companyNameController,
           icon: FontAwesomeIcons.building,
           theme: theme,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter company name';
+              return tr('signup.validation.required');
             }
             return null;
           },
         ),
         const SizedBox(height: 16),
         _buildDropdownField(
-          'Position',
+          tr('signup.company.position'),
           ['Contractor', 'Sub-contractor'],
           icon: FontAwesomeIcons.briefcase,
           theme: theme,
@@ -350,7 +353,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
           },
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select position';
+              return tr('signup.validation.required');
             }
             return null;
           },
@@ -359,26 +362,26 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
         _buildActivitySectorDropdowns(theme),
         const SizedBox(height: 16),
         _buildTextField(
-          'SIRET Number',
+          tr('signup.company.siretNumber'),
           controller: _siretNumberController,
           icon: FontAwesomeIcons.idCard,
           theme: theme,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter SIRET number';
+              return tr('signup.validation.required');
             }
             return null;
           },
         ),
         const SizedBox(height: 16),
         _buildTextField(
-          'Street',
+          tr('signup.company.street'),
           controller: _streetController,
           icon: FontAwesomeIcons.road,
           theme: theme,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter street';
+              return tr('signup.validation.required');
             }
             return null;
           },
@@ -388,13 +391,13 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
           children: [
             Expanded(
               child: _buildTextField(
-                'Area Code',
+                tr('signup.company.areaCode'),
                 controller: _areaCodeController,
                 icon: FontAwesomeIcons.locationDot,
                 theme: theme,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter area code';
+                    return tr('signup.validation.required');
                   }
                   return null;
                 },
@@ -403,13 +406,13 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
             const SizedBox(width: 16),
             Expanded(
               child: _buildTextField(
-                'City',
+                tr('signup.company.city'),
                 controller: _cityController,
                 icon: FontAwesomeIcons.city,
                 theme: theme,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter city';
+                    return tr('signup.validation.required');
                   }
                   return null;
                 },
@@ -428,13 +431,13 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
           children: [
             Expanded(
               child: _buildTextField(
-                'First Name',
+                tr('signup.personal.firstName'),
                 controller: _firstNameController,
                 icon: FontAwesomeIcons.user,
                 theme: theme,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Required';
+                    return tr('signup.validation.required');
                   }
                   return null;
                 },
@@ -443,13 +446,13 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
             const SizedBox(width: 16),
             Expanded(
               child: _buildTextField(
-                'Last Name',
+                tr('signup.personal.lastName'),
                 controller: _lastNameController,
                 icon: FontAwesomeIcons.user,
                 theme: theme,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Required';
+                    return tr('signup.validation.required');
                   }
                   return null;
                 },
@@ -459,38 +462,38 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
         ),
         const SizedBox(height: 16),
         _buildTextField(
-          'Email',
+          tr('signup.personal.email'),
           controller: _emailController,
           icon: FontAwesomeIcons.envelope,
           theme: theme,
           keyboardType: TextInputType.emailAddress,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter email';
+              return tr('signup.validation.required');
             }
             if (!value.contains('@')) {
-              return 'Please enter a valid email';
+              return tr('signup.validation.email');
             }
             return null;
           },
         ),
         const SizedBox(height: 16),
         _buildTextField(
-          'Phone',
+          tr('signup.personal.phone'),
           controller: _phoneController,
           icon: FontAwesomeIcons.phone,
           theme: theme,
           keyboardType: TextInputType.phone,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter phone number';
+              return tr('signup.validation.required');
             }
             return null;
           },
         ),
         const SizedBox(height: 16),
         _buildTextField(
-          'Password',
+          tr('signup.personal.password'),
           controller: _passwordController,
           icon: FontAwesomeIcons.lock,
           theme: theme,
@@ -508,27 +511,27 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter password';
+              return tr('signup.validation.required');
             }
             if (value.length < 6) {
-              return 'Password must be at least 6 characters';
+              return tr('signup.validation.password');
             }
             return null;
           },
         ),
         const SizedBox(height: 16),
         _buildTextField(
-          'Confirm Password',
+          tr('signup.personal.confirmPassword'),
           controller: _confirmPasswordController,
           icon: FontAwesomeIcons.lock,
           theme: theme,
           obscureText: !_isPasswordVisible,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please confirm password';
+              return tr('signup.validation.required');
             }
             if (value != _passwordController.text) {
-              return 'Passwords do not match';
+              return tr('signup.validation.passwordMatch');
             }
             return null;
           },
@@ -634,7 +637,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
       children: [
         DropdownButtonFormField<String>(
           decoration: InputDecoration(
-            labelText: 'Main Sector',
+            labelText: tr('signup.company.mainSector'),
             prefixIcon: Icon(
               FontAwesomeIcons.industry,
               size: 20,
@@ -658,7 +661,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
             ),
           ),
           value: selectedMainSector,
-          items: ActivitySector.sectors.keys.map((String sector) {
+          items: ActivitySector.getSectors(context).keys.map((String sector) {
             return DropdownMenuItem<String>(
               value: sector,
               child: Text(sector),
@@ -669,7 +672,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
               selectedMainSector = newValue;
               selectedSubSector = null;
               if (newValue != null) {
-                subSectors = ActivitySector.sectors[newValue] ?? [];
+                subSectors = ActivitySector.getSectors(context)[newValue] ?? [];
               } else {
                 subSectors = [];
               }
@@ -677,7 +680,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
           },
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select main sector';
+              return tr('signup.validation.required');
             }
             return null;
           },
@@ -686,7 +689,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
             decoration: InputDecoration(
-              labelText: 'Sub Sector',
+              labelText: tr('signup.company.subSector'),
               prefixIcon: Icon(
                 FontAwesomeIcons.toolbox,
                 size: 20,
@@ -723,7 +726,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select sub sector';
+                return tr('signup.validation.required');
               }
               return null;
             },

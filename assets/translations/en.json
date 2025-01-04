@@ -11,25 +11,143 @@
     "profile": "Profile",
     "settings": "Settings"
   },
+  "about": {
+    "title": "About Us"
+  },
+  "mission": {
+    "title": "Our Mission",
+    "description": "We are dedicated to revolutionizing the construction industry by connecting skilled professionals with the right opportunities."
+  },
+  "solution": {
+    "title": "Our Solutions",
+    "management": {
+      "title": "Project Management",
+      "description": "Streamline your construction projects with our comprehensive management tools."
+    },
+    "support": {
+      "title": "24/7 Support",
+      "description": "Get round-the-clock assistance from our dedicated support team."
+    },
+    "location": {
+      "title": "Location Services",
+      "description": "Find projects and professionals in your area with our location-based services."
+    },
+    "finance": {
+      "title": "Financial Tools",
+      "description": "Manage payments, invoices, and financial reporting all in one place."
+    },
+    "cta": {
+      "title": "Ready to Transform Your Construction Business?",
+      "button": "Get Started Now"
+    }
+  },
   "home": {
     "hero": {
-      "title": "Streamline Your Business Management",
-      "subtitle": "Efficiently manage your companies, track performance, and grow your business with MiniDost",
+      "title": "Transform Your Construction Business",
+      "subtitle": "Connect with skilled professionals and manage projects efficiently",
       "signup": "Get Started"
     },
     "features": {
-      "title": "Why Choose MiniDost",
+      "title": "Why Choose Minidost",
+      "description": "Discover how we can help your construction business thrive",
       "management": {
-        "title": "Business Management",
-        "description": "Centralize your business operations and manage multiple companies efficiently"
+        "title": "Project Management",
+        "description": "Streamline your construction projects"
       },
       "organization": {
-        "title": "Smart Organization",
-        "description": "Keep your business data organized and accessible in one place"
+        "title": "Team Organization",
+        "description": "Manage your workforce effectively"
       },
       "analytics": {
-        "title": "Powerful Analytics",
-        "description": "Get insights into your business performance with detailed analytics"
+        "title": "Analytics & Insights",
+        "description": "Make data-driven decisions"
+      }
+    },
+    "call_to_action": {
+      "title": "Ready to Get Started?",
+      "description": "Join thousands of construction professionals who trust Minidost"
+    }
+  },
+  "signup": {
+    "step1": "Step 1 - Company Information",
+    "step1of2": "Step 1 of 2",
+    "step2": "Step 2 - Personal Information",
+    "step2of2": "Step 2 of 2",
+    "company": {
+      "legalStatus": "Legal Status",
+      "companyName": "Company Name",
+      "position": "Position",
+      "mainSector": "Main Sector",
+      "subSector": "Sub Sector",
+      "siretNumber": "SIRET Number",
+      "street": "Street",
+      "areaCode": "Area Code",
+      "city": "City"
+    },
+    "personal": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "phone": "Phone",
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "validation": {
+      "required": "This field is required",
+      "email": "Please enter a valid email",
+      "password": "Password must be at least 6 characters",
+      "passwordMatch": "Passwords do not match"
+    },
+    "buttons": {
+      "next": "Next",
+      "back": "Back",
+      "submit": "Submit"
+    },
+    "sectors": {
+      "interiorDesign": {
+        "name": "Interior Design",
+        "subsectors": {
+          "buildingCleaning": "Building Cleaning",
+          "interiorDesigner": "Interior Designer",
+          "painter": "Painter",
+          "plasterer": "Plasterer",
+          "carpetLayer": "Carpet Layer",
+          "tileSetter": "Tile Setter"
+        }
+      },
+      "technicalEquipment": {
+        "name": "Technical Equipment",
+        "subsectors": {
+          "electrician": "Electrician",
+          "plumber": "Plumber",
+          "hvacInstaller": "HVAC Installer"
+        }
+      },
+      "buildingEnvelope": {
+        "name": "Building Envelope",
+        "subsectors": {
+          "ropeAccessTechnician": "Rope Access Technician",
+          "roofer": "Roofer",
+          "waterproofer": "Waterproofer",
+          "metalJoinery": "Metal Joinery"
+        }
+      },
+      "structureConstruction": {
+        "name": "Structure Construction",
+        "subsectors": {
+          "woodCarpenter": "Wood Carpenter",
+          "equipmentOperator": "Equipment Operator",
+          "woodConstructor": "Wood Constructor",
+          "concreteConstructor": "Concrete Constructor",
+          "flooringConstructor": "Flooring Constructor",
+          "metalConstructor": "Metal Constructor",
+          "demolitionExpert": "Demolition Expert",
+          "craneOperator": "Crane Operator",
+          "mason": "Mason",
+          "scaffoldingAssembler": "Scaffolding Assembler",
+          "liftingEquipmentAssembler": "Lifting Equipment Assembler",
+          "stoneCutter": "Stone Cutter"
+        }
       }
     }
   }

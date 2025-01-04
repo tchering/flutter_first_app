@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class LanguageSelector extends StatelessWidget {
   final Function(Locale) onLocaleChange;
@@ -13,7 +14,9 @@ class LanguageSelector extends StatelessWidget {
     return PopupMenuButton<String>(
       icon: const Icon(Icons.language),
       onSelected: (String value) {
-        onLocaleChange(Locale(value));
+        final locale = Locale(value);
+        context.setLocale(locale);
+        onLocaleChange(locale);
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         const PopupMenuItem<String>(

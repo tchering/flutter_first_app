@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import '../l10n/app_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmallScreen = screenWidth < 600;
 
@@ -17,7 +16,7 @@ class AboutScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          localizations.translate('mission.title'),
+          'about.title'.tr(),
           style: const TextStyle(fontSize: 20),
         ),
         elevation: 0,
@@ -43,7 +42,7 @@ class AboutScreen extends StatelessWidget {
             children: [
               // Mission Section
               Text(
-                localizations.translate('mission.title'),
+                'mission.title'.tr(),
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
@@ -51,7 +50,7 @@ class AboutScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                localizations.translate('mission.description'),
+                'mission.description'.tr(),
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       height: 1.6,
                       color: Colors.black54,
@@ -61,7 +60,7 @@ class AboutScreen extends StatelessWidget {
 
               // Solutions Section
               Text(
-                localizations.translate('solution.title'),
+                'solution.title'.tr(),
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
@@ -92,7 +91,7 @@ class AboutScreen extends StatelessWidget {
                   ),
                   _buildFeatureItem(
                     context,
-                    icon: Icons.analytics,
+                    icon: Icons.attach_money,
                     translationPrefix: 'solution.finance',
                     color: Colors.purple,
                   ),
@@ -106,7 +105,7 @@ class AboutScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      localizations.translate('solution.cta.title'),
+                      'solution.cta.title'.tr(),
                       style:
                           Theme.of(context).textTheme.headlineSmall?.copyWith(
                                 fontWeight: FontWeight.w600,
@@ -121,7 +120,7 @@ class AboutScreen extends StatelessWidget {
                       },
                       icon: const Icon(Icons.rocket_launch),
                       label: Text(
-                        localizations.translate('solution.cta.button'),
+                        'solution.cta.button'.tr(),
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -156,7 +155,6 @@ class AboutScreen extends StatelessWidget {
   }) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmallScreen = screenWidth < 600;
-    final localizations = AppLocalizations.of(context);
 
     return Container(
       width: isSmallScreen ? double.infinity : 250,
@@ -172,7 +170,7 @@ class AboutScreen extends StatelessWidget {
           Icon(icon, color: color, size: 24),
           const SizedBox(height: 16),
           Text(
-            localizations.translate('$translationPrefix.title'),
+            tr('$translationPrefix.title'),
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: Colors.black87,
@@ -180,7 +178,7 @@ class AboutScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            localizations.translate('$translationPrefix.description'),
+            tr('$translationPrefix.description'),
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   height: 1.5,
                   color: Colors.black54,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../l10n/app_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -21,7 +21,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.isContractor ? 'Contractor Dashboard' : 'Subcontractor Dashboard'),
+        title: Text(widget.isContractor ? tr('contractor_dashboard') : tr('subcontractor_dashboard')),
       ),
       body: _buildBody(),
       bottomNavigationBar: BottomNavigationBar(
@@ -109,7 +109,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: 8),
             Chip(
               label: Text(
-                widget.isContractor ? 'Contractor' : 'Subcontractor',
+                widget.isContractor ? tr('contractor') : tr('subcontractor'),
                 style: const TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.blue,
@@ -196,30 +196,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.briefcase,
               value: '15',
-              label: 'Total Projects',
+              label: tr('total_projects'),
               color: Colors.blue,
               hasNotification: false,
             ),
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.clock,
               value: '3',
-              label: 'Pending',
+              label: tr('pending'),
               color: Colors.orange,
               hasNotification: false,
             ),
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.hammer,
               value: '5',
-              label: 'Active',
+              label: tr('active'),
               color: Colors.green,
               hasNotification: true,
               notificationCount: '2',
-              notificationLabel: 'applications',
+              notificationLabel: tr('applications'),
             ),
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.checkDouble,
               value: '7',
-              label: 'Completed',
+              label: tr('completed'),
               color: Colors.purple,
               hasNotification: false,
             ),
@@ -361,7 +361,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Expanded(
                   child: _buildActionButton(
                     icon: Icons.add,
-                    label: 'New Project',
+                    label: tr('new_project'),
                     color: Colors.blue,
                     onTap: () {},
                   ),
@@ -370,7 +370,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Expanded(
                   child: _buildActionButton(
                     icon: Icons.search,
-                    label: 'Find Contractors',
+                    label: tr('find_contractors'),
                     color: Colors.green,
                     onTap: () {},
                   ),

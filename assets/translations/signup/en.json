@@ -1,0 +1,86 @@
+{
+  "signup": {
+    "title": "Sign Up",
+    "step1": "Step 1/2 - Company Information",
+    "step2": "Step 2/2 - Personal Information",
+    "company": {
+      "legalStatus": "Legal Status",
+      "companyName": "Company Name",
+      "position": "Position",
+      "activitySector": "Activity Sector",
+      "subSector": "Sub Sector",
+      "siretNumber": "SIRET Number",
+      "street": "Street",
+      "areaCode": "Area Code",
+      "city": "City"
+    },
+    "personal": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "phone": "Phone",
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "sectors": {
+      "interiorDesign": {
+        "name": "Interior Design & Finishing",
+        "subsectors": {
+          "buildingCleaning": "Building Cleaning Pro.",
+          "interiorDesigner": "Interior Designer",
+          "painter": "Painter",
+          "plasterer": "Plasterer",
+          "carpetLayer": "Carpet Layer",
+          "tileSetter": "Tile Setter"
+        }
+      },
+      "technicalEquipment": {
+        "name": "Technical Equipment",
+        "subsectors": {
+          "electrician": "Electrician",
+          "plumber": "Plumber",
+          "hvacInstaller": "HVAC Installer"
+        }
+      },
+      "buildingEnvelope": {
+        "name": "Building Envelope",
+        "subsectors": {
+          "ropeAccessTechnician": "Rope Access Technician",
+          "roofer": "Roofer",
+          "waterproofer": "Waterproofer",
+          "metalJoinery": "Metal Joinery"
+        }
+      },
+      "structureConstruction": {
+        "name": "Structure & Construction",
+        "subsectors": {
+          "woodCarpenter": "Wood Carpenter",
+          "equipmentOperator": "Equipment Operator",
+          "woodConstructor": "Wood Constructor",
+          "concreteConstructor": "Reinforced Concrete Constructor",
+          "flooringConstructor": "Industrial Flooring Constructor",
+          "metalConstructor": "Metal Constructor",
+          "demolitionExpert": "Demolition Expert",
+          "craneOperator": "Crane Operator",
+          "mason": "Mason",
+          "scaffoldingAssembler": "Scaffolding Assembler",
+          "liftingEquipmentAssembler": "Lifting Equipment Assembler",
+          "stoneCutter": "Stone Cutter"
+        }
+      }
+    },
+    "validation": {
+      "required": "This field is required",
+      "invalidEmail": "Please enter a valid email",
+      "passwordLength": "Password must be at least 6 characters",
+      "passwordMatch": "Passwords do not match",
+      "invalidPhone": "Please enter a valid phone number"
+    },
+    "buttons": {
+      "next": "Next",
+      "back": "Back",
+      "submit": "Submit",
+      "close": "Close"
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../l10n/app_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../signup_screen.dart';
 
 class HeroSection extends StatelessWidget {
@@ -7,85 +7,75 @@ class HeroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
-
+    final screenWidth = MediaQuery.of(context).size.width;
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 24.0,
-          vertical: 48.0,
-        ),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxWidth > 800) {
-              return _buildWideContent(context, localizations);
-            }
-            return _buildNarrowContent(context, localizations);
-          },
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Theme.of(context).primaryColor,
+            Theme.of(context).primaryColor.withOpacity(0.8),
+          ],
         ),
       ),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 24.0,
+        vertical: 48.0,
+      ),
+      child: screenWidth > 800
+          ? _buildWideContent(context)
+          : _buildNarrowContent(context),
     );
   }
 
-  Widget _buildWideContent(BuildContext context, AppLocalizations localizations) {
+  Widget _buildWideContent(BuildContext context) {
     return Row(
       children: [
-        Expanded(child: _buildContent(context, localizations)),
+        Expanded(child: _buildContent(context)),
+        const SizedBox(width: 48),
         Expanded(child: _buildImage()),
       ],
     );
   }
 
-  Widget _buildNarrowContent(BuildContext context, AppLocalizations localizations) {
+  Widget _buildNarrowContent(BuildContext context) {
     return Column(
       children: [
-        _buildContent(context, localizations),
-        const SizedBox(height: 32),
+        _buildContent(context),
+        const SizedBox(height: 48),
         _buildImage(),
       ],
     );
   }
 
-  Widget _buildContent(BuildContext context, AppLocalizations localizations) {
+  Widget _buildContent(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          localizations.translate('home.hero.title'),
-          style: const TextStyle(
-            fontSize: 40,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-            height: 1.2,
-          ),
+          tr('home.hero.title'),
+          style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
         ),
         const SizedBox(height: 24),
         Text(
-          localizations.translate('home.hero.subtitle'),
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.grey[600],
-            height: 1.5,
-          ),
+          tr('home.hero.subtitle'),
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                color: Colors.white.withOpacity(0.9),
+                height: 1.5,
+              ),
         ),
-        const SizedBox(height: 32),
-        _buildSignUpButton(context, localizations),
+        const SizedBox(height: 40),
+        _buildSignUpButton(context),
       ],
     );
   }
 
-  Widget _buildSignUpButton(BuildContext context, AppLocalizations localizations) {
+  Widget _buildSignUpButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
         Navigator.push(
@@ -94,36 +84,25 @@ class HeroSection extends StatelessWidget {
         );
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.white,
+        foregroundColor: Theme.of(context).primaryColor,
         padding: const EdgeInsets.symmetric(
           horizontal: 32,
           vertical: 20,
         ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
+        textStyle: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
         ),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.person_add, size: 20),
-          const SizedBox(width: 8),
-          Text(
-            localizations.translate('home.hero.signup'),
-            style: const TextStyle(fontSize: 16),
-          ),
-        ],
-      ),
+      child: Text(tr('home.hero.signup')),
     );
   }
 
   Widget _buildImage() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: Image.network(
-        'https://img.freepik.com/free-vector/business-team-putting-together-jigsaw-puzzle-isolated-flat-vector-illustration-cartoon-partners-working-connection-teamwork-partnership-cooperation-concept_74855-9814.jpg',
-        fit: BoxFit.cover,
-      ),
+    return Image.asset(
+      'assets/images/hero.png',
+      fit: BoxFit.contain,
     );
   }
 }

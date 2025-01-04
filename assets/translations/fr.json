@@ -11,25 +11,143 @@
     "profile": "Profil",
     "settings": "Paramètres"
   },
+  "about": {
+    "title": "À propos de nous"
+  },
+  "mission": {
+    "title": "Notre Mission",
+    "description": "Nous nous engageons à révolutionner l'industrie de la construction en connectant les professionnels qualifiés avec les bonnes opportunités."
+  },
+  "solution": {
+    "title": "Nos Solutions",
+    "management": {
+      "title": "Gestion de Projet",
+      "description": "Optimisez vos projets de construction avec nos outils de gestion complets."
+    },
+    "support": {
+      "title": "Support 24/7",
+      "description": "Bénéficiez d'une assistance 24h/24 et 7j/7 de notre équipe de support dédiée."
+    },
+    "location": {
+      "title": "Services de Localisation",
+      "description": "Trouvez des projets et des professionnels dans votre région grâce à nos services basés sur la localisation."
+    },
+    "finance": {
+      "title": "Outils Financiers",
+      "description": "Gérez les paiements, les factures et les rapports financiers en un seul endroit."
+    },
+    "cta": {
+      "title": "Prêt à Transformer Votre Entreprise de Construction ?",
+      "button": "Commencer Maintenant"
+    }
+  },
   "home": {
     "hero": {
-      "title": "Simplifiez votre Gestion d'Entreprise",
-      "subtitle": "Gérez efficacement vos entreprises, suivez les performances et développez votre activité avec MiniDost",
+      "title": "Transformez Votre Entreprise de Construction",
+      "subtitle": "Connectez-vous avec des professionnels qualifiés et gérez vos projets efficacement",
       "signup": "Commencer"
     },
     "features": {
-      "title": "Pourquoi Choisir MiniDost",
+      "title": "Pourquoi Choisir Minidost",
+      "description": "Découvrez comment nous pouvons aider votre entreprise de construction à prospérer",
       "management": {
-        "title": "Gestion d'Entreprise",
-        "description": "Centralisez vos opérations et gérez plusieurs entreprises efficacement"
+        "title": "Gestion de Projet",
+        "description": "Optimisez vos projets de construction"
       },
       "organization": {
-        "title": "Organisation Intelligente",
-        "description": "Gardez vos données commerciales organisées et accessibles en un seul endroit"
+        "title": "Organisation d'Équipe",
+        "description": "Gérez votre main-d'œuvre efficacement"
       },
       "analytics": {
-        "title": "Analyses Puissantes",
-        "description": "Obtenez des informations sur la performance de votre entreprise avec des analyses détaillées"
+        "title": "Analyses et Insights",
+        "description": "Prenez des décisions basées sur les données"
+      }
+    },
+    "call_to_action": {
+      "title": "Prêt à Commencer ?",
+      "description": "Rejoignez des milliers de professionnels de la construction qui font confiance à Minidost"
+    }
+  },
+  "signup": {
+    "step1": "Étape 1 - Informations sur l'entreprise",
+    "step1of2": "Étape 1 sur 2",
+    "step2": "Étape 2 - Informations personnelles",
+    "step2of2": "Étape 2 sur 2",
+    "company": {
+      "legalStatus": "Statut juridique",
+      "companyName": "Nom de l'entreprise",
+      "position": "Poste",
+      "mainSector": "Secteur principal",
+      "subSector": "Sous-secteur",
+      "siretNumber": "Numéro SIRET",
+      "street": "Rue",
+      "areaCode": "Code postal",
+      "city": "Ville"
+    },
+    "personal": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le mot de passe"
+    },
+    "validation": {
+      "required": "Ce champ est obligatoire",
+      "email": "Veuillez entrer un email valide",
+      "password": "Le mot de passe doit contenir au moins 6 caractères",
+      "passwordMatch": "Les mots de passe ne correspondent pas"
+    },
+    "buttons": {
+      "next": "Suivant",
+      "back": "Retour",
+      "submit": "Soumettre"
+    },
+    "sectors": {
+      "interiorDesign": {
+        "name": "Design d'Intérieur",
+        "subsectors": {
+          "buildingCleaning": "Nettoyage de Bâtiment",
+          "interiorDesigner": "Designer d'Intérieur",
+          "painter": "Peintre",
+          "plasterer": "Plâtrier",
+          "carpetLayer": "Poseur de Moquette",
+          "tileSetter": "Carreleur"
+        }
+      },
+      "technicalEquipment": {
+        "name": "Équipement Technique",
+        "subsectors": {
+          "electrician": "Électricien",
+          "plumber": "Plombier",
+          "hvacInstaller": "Installateur CVC"
+        }
+      },
+      "buildingEnvelope": {
+        "name": "Enveloppe du Bâtiment",
+        "subsectors": {
+          "ropeAccessTechnician": "Technicien d'Accès par Corde",
+          "roofer": "Couvreur",
+          "waterproofer": "Étanchéiste",
+          "metalJoinery": "Menuiserie Métallique"
+        }
+      },
+      "structureConstruction": {
+        "name": "Construction de Structure",
+        "subsectors": {
+          "woodCarpenter": "Charpentier Bois",
+          "equipmentOperator": "Opérateur d'Équipement",
+          "woodConstructor": "Constructeur Bois",
+          "concreteConstructor": "Constructeur Béton",
+          "flooringConstructor": "Constructeur de Sol",
+          "metalConstructor": "Constructeur Métal",
+          "demolitionExpert": "Expert en Démolition",
+          "craneOperator": "Grutier",
+          "mason": "Maçon",
+          "scaffoldingAssembler": "Monteur d'Échafaudages",
+          "liftingEquipmentAssembler": "Monteur d'Équipements de Levage",
+          "stoneCutter": "Tailleur de Pierre"
+        }
       }
     }
   }

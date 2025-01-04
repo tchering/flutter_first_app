@@ -1,0 +1,86 @@
+{
+  "signup": {
+    "title": "S'inscrire",
+    "step1": "Étape 1/2 - Informations sur l'entreprise",
+    "step2": "Étape 2/2 - Informations personnelles",
+    "company": {
+      "legalStatus": "Statut juridique",
+      "companyName": "Nom de l'entreprise",
+      "position": "Poste",
+      "activitySector": "Secteur d'activité",
+      "subSector": "Sous-secteur",
+      "siretNumber": "Numéro SIRET",
+      "street": "Rue",
+      "areaCode": "Code postal",
+      "city": "Ville"
+    },
+    "personal": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le mot de passe"
+    },
+    "sectors": {
+      "interiorDesign": {
+        "name": "Design d'intérieur & Finition",
+        "subsectors": {
+          "buildingCleaning": "Pro. du nettoyage",
+          "interiorDesigner": "Designer d'intérieur",
+          "painter": "Peintre",
+          "plasterer": "Plâtrier",
+          "carpetLayer": "Poseur de moquette",
+          "tileSetter": "Carreleur"
+        }
+      },
+      "technicalEquipment": {
+        "name": "Équipement technique",
+        "subsectors": {
+          "electrician": "Électricien",
+          "plumber": "Plombier",
+          "hvacInstaller": "Installateur CVC"
+        }
+      },
+      "buildingEnvelope": {
+        "name": "Enveloppe du bâtiment",
+        "subsectors": {
+          "ropeAccessTechnician": "Technicien cordiste",
+          "roofer": "Couvreur",
+          "waterproofer": "Étanchéiste",
+          "metalJoinery": "Menuiserie métallique"
+        }
+      },
+      "structureConstruction": {
+        "name": "Structure & Construction",
+        "subsectors": {
+          "woodCarpenter": "Menuisier bois",
+          "equipmentOperator": "Opérateur d'équipement",
+          "woodConstructor": "Constructeur bois",
+          "concreteConstructor": "Constructeur béton armé",
+          "flooringConstructor": "Constructeur sol industriel",
+          "metalConstructor": "Constructeur métallique",
+          "demolitionExpert": "Expert en démolition",
+          "craneOperator": "Grutier",
+          "mason": "Maçon",
+          "scaffoldingAssembler": "Monteur d'échafaudages",
+          "liftingEquipmentAssembler": "Monteur d'équipements de levage",
+          "stoneCutter": "Tailleur de pierre"
+        }
+      }
+    },
+    "validation": {
+      "required": "Ce champ est obligatoire",
+      "invalidEmail": "Veuillez entrer un email valide",
+      "passwordLength": "Le mot de passe doit contenir au moins 6 caractères",
+      "passwordMatch": "Les mots de passe ne correspondent pas",
+      "invalidPhone": "Veuillez entrer un numéro de téléphone valide"
+    },
+    "buttons": {
+      "next": "Suivant",
+      "back": "Retour",
+      "submit": "Soumettre",
+      "close": "Fermer"
+    }
+  }
+}
