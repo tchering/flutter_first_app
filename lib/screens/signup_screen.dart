@@ -1,48 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:easy_localization/easy_localization.dart';
-
-class ActivitySector {
-  static Map<String, List<String>> getSectors(BuildContext context) {
-    return {
-      tr('signup.sectors.interiorDesign.name'): [
-        'Pro. Nettoyage du batiment',
-        'Agenceur',
-        'Peintre',
-        'Platrier',
-        'Solier moquettiste',
-        'Carreleur',
-      ],
-      tr('signup.sectors.technicalEquipment.name'): [
-        'Electricien',
-        'Plombier',
-        'Instal. chauffage & clim.',
-      ],
-      tr('signup.sectors.buildingEnvelope.name'): [
-        'Cordiste',
-        'Couvreur',
-        'Etancheur',
-        'Menuiserie métallique',
-        'Miroitier',
-        'Storiste',
-      ],
-      tr('signup.sectors.structureConstruction.name'): [
-        'Charpentier bois',
-        'Conducteur d\'engins',
-        'Constructeur bois',
-        'Constructeur en béton armé',
-        'Constructeur en sols industriels',
-        'Constructeur métallique',
-        'Démolisseur',
-        'Grutier',
-        'Maçon',
-        'Monteur d\'échafaudage',
-        'Monteur levageur',
-        'Tailleur de pierre',
-      ],
-    };
-  }
-}
+import '../services/api_service.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -77,11 +36,13 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _employeeNumberController = TextEditingController();
 
   String? selectedMainSector;
   String? selectedSubSector;
   List<String> subSectors = [];
   String? selectedPosition;
+  String? selectedEstablishmentYear;
 
   @override
   void initState() {
@@ -125,6 +86,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
     _phoneController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _employeeNumberController.dispose();
     _animationController.dispose();
     super.dispose();
   }
@@ -133,7 +95,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
     if (_formKey.currentState!.validate() && 
         selectedMainSector != null && 
         selectedSubSector != null && 
-        selectedPosition != null) {
+        selectedPosition != null && 
+        selectedEstablishmentYear != null) {
       setState(() {
         isCompanyInfoStep = false;
       });
@@ -146,10 +109,43 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
     });
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      // TODO: Implement signup logic
-      print('Form submitted');
+      try {
+        final userData = {
+          'email': _emailController.text,
+          'password': _passwordController.text,
+          'password_confirmation': _confirmPasswordController.text,
+          'first_name': _firstNameController.text,
+          'last_name': _lastNameController.text,
+          'company_name': _companyNameController.text,
+          'legal_status': _legalStatusController.text,
+          'position': selectedPosition,
+          'main_sector': selectedMainSector,
+          'sub_sector': selectedSubSector,
+          'siret_number': _siretNumberController.text,
+          'street': _streetController.text,
+          'area_code': _areaCodeController.text,
+          'city': _cityController.text,
+          'establishment_date': selectedEstablishmentYear,
+          'employees_number': int.parse(_employeeNumberController.text),
+        };
+
+        final response = await ApiService.signup(userData);
+        // Handle successful signup
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(tr('signup.success'))),
+          );
+          Navigator.of(context).pop(); // Return to previous screen
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.toString())),
+          );
+        }
+      }
     }
   }
 
@@ -316,22 +312,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
   Widget _buildCompanyInfoForm(ThemeData theme) {
     return Column(
       children: [
-        _buildDropdownField(
-          tr('signup.company.legalStatus'),
-          ['SARL', 'EURL', 'SA', 'SAS', 'Auto-entrepreneur'],
-          controller: _legalStatusController,
-          icon: FontAwesomeIcons.buildingColumns,
-          theme: theme,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return tr('signup.validation.required');
-            }
-            return null;
-          },
-        ),
-        const SizedBox(height: 16),
         _buildTextField(
-          tr('signup.company.companyName'),
+          'signup.form.companyName'.tr(),
           controller: _companyNameController,
           icon: FontAwesomeIcons.building,
           theme: theme,
@@ -343,16 +325,14 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
           },
         ),
         const SizedBox(height: 16),
+        
+        // Legal Status Dropdown
         _buildDropdownField(
-          tr('signup.company.position'),
-          ['Contractor', 'Sub-contractor'],
-          icon: FontAwesomeIcons.briefcase,
+          'signup.form.legalStatus'.tr(),
+          ['SARL', 'EURL', 'SA', 'SAS', 'Auto-entrepreneur'],
+          controller: _legalStatusController,
+          icon: FontAwesomeIcons.scaleBalanced,
           theme: theme,
-          onChanged: (value) {
-            setState(() {
-              selectedPosition = value;
-            });
-          },
           validator: (value) {
             if (value == null || value.isEmpty) {
               return tr('signup.validation.required');
@@ -361,10 +341,70 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
           },
         ),
         const SizedBox(height: 16),
+
+        // Position Dropdown
+        _buildDropdownField(
+          'signup.form.position'.tr(),
+          ['Contractor', 'Sub-contractor'],
+          onChanged: (value) {
+            setState(() {
+              selectedPosition = value;
+            });
+          },
+          icon: FontAwesomeIcons.userTie,
+          theme: theme,
+          validator: (value) {
+            if (selectedPosition == null) {
+              return tr('signup.validation.required');
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 16),
+
+        // Establishment Year Dropdown
+        _buildDropdownField(
+          'signup.form.establishmentYear'.tr(),
+          ApiService.getEstablishmentYears(),
+          onChanged: (value) {
+            setState(() {
+              selectedEstablishmentYear = value;
+            });
+          },
+          icon: FontAwesomeIcons.calendar,
+          theme: theme,
+          validator: (value) {
+            if (selectedEstablishmentYear == null) {
+              return tr('signup.validation.establishmentDateRequired');
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 16),
+
+        // Employee Number Input
+        _buildTextField(
+          'signup.form.employeeNumber'.tr(),
+          controller: _employeeNumberController,
+          icon: FontAwesomeIcons.users,
+          theme: theme,
+          keyboardType: TextInputType.number,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return tr('signup.validation.employeesNumberRequired');
+            }
+            // Validate that it's a number
+            if (int.tryParse(value) == null) {
+              return tr('signup.validation.invalidNumber');
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 16),
         _buildActivitySectorDropdowns(theme),
         const SizedBox(height: 16),
         _buildTextField(
-          tr('signup.company.siretNumber'),
+          'signup.form.siretNumber'.tr(),
           controller: _siretNumberController,
           icon: FontAwesomeIcons.idCard,
           theme: theme,
@@ -377,7 +417,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
         ),
         const SizedBox(height: 16),
         _buildTextField(
-          tr('signup.company.street'),
+          'signup.form.street'.tr(),
           controller: _streetController,
           icon: FontAwesomeIcons.road,
           theme: theme,
@@ -393,7 +433,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
           children: [
             Expanded(
               child: _buildTextField(
-                tr('signup.company.areaCode'),
+                'signup.form.areaCode'.tr(),
                 controller: _areaCodeController,
                 icon: FontAwesomeIcons.locationDot,
                 theme: theme,
@@ -408,7 +448,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
             const SizedBox(width: 16),
             Expanded(
               child: _buildTextField(
-                tr('signup.company.city'),
+                'signup.form.city'.tr(),
                 controller: _cityController,
                 icon: FontAwesomeIcons.city,
                 theme: theme,
@@ -433,7 +473,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
           children: [
             Expanded(
               child: _buildTextField(
-                tr('signup.personal.firstName'),
+                'signup.form.firstName'.tr(),
                 controller: _firstNameController,
                 icon: FontAwesomeIcons.user,
                 theme: theme,
@@ -448,7 +488,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
             const SizedBox(width: 16),
             Expanded(
               child: _buildTextField(
-                tr('signup.personal.lastName'),
+                'signup.form.lastName'.tr(),
                 controller: _lastNameController,
                 icon: FontAwesomeIcons.user,
                 theme: theme,
@@ -464,7 +504,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
         ),
         const SizedBox(height: 16),
         _buildTextField(
-          tr('signup.personal.email'),
+          'signup.form.email'.tr(),
           controller: _emailController,
           icon: FontAwesomeIcons.envelope,
           theme: theme,
@@ -481,7 +521,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
         ),
         const SizedBox(height: 16),
         _buildTextField(
-          tr('signup.personal.phone'),
+          'signup.form.phone'.tr(),
           controller: _phoneController,
           icon: FontAwesomeIcons.phone,
           theme: theme,
@@ -495,7 +535,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
         ),
         const SizedBox(height: 16),
         _buildTextField(
-          tr('signup.personal.password'),
+          'signup.form.password'.tr(),
           controller: _passwordController,
           icon: FontAwesomeIcons.lock,
           theme: theme,
@@ -523,7 +563,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
         ),
         const SizedBox(height: 16),
         _buildTextField(
-          tr('signup.personal.confirmPassword'),
+          'signup.form.confirmPassword'.tr(),
           controller: _confirmPasswordController,
           icon: FontAwesomeIcons.lock,
           theme: theme,
@@ -635,59 +675,11 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
   }
 
   Widget _buildActivitySectorDropdowns(ThemeData theme) {
-    final sectors = ActivitySector.getSectors(context);
-    final currentLocale = context.locale.languageCode;
-    
-    Map<String, List<String>> getTranslatedSectors() {
-      if (currentLocale == 'en') {
-        return {
-          tr('signup.sectors.interiorDesign.name'): [
-            'Building Cleaning Pro.',
-            'Interior Designer',
-            'Painter',
-            'Plasterer',
-            'Carpet Layer',
-            'Tile Setter',
-          ],
-          tr('signup.sectors.technicalEquipment.name'): [
-            'Electrician',
-            'Plumber',
-            'HVAC Installer',
-          ],
-          tr('signup.sectors.buildingEnvelope.name'): [
-            'Rope Access Technician',
-            'Roofer',
-            'Waterproofer',
-            'Metal Joinery',
-            'Glazier',
-            'Blind Installer',
-          ],
-          tr('signup.sectors.structureConstruction.name'): [
-            'Wood Carpenter',
-            'Machine Operator',
-            'Wood Constructor',
-            'Reinforced Concrete Constructor',
-            'Industrial Flooring Constructor',
-            'Metal Constructor',
-            'Demolition Worker',
-            'Crane Operator',
-            'Mason',
-            'Scaffolding Assembler',
-            'Lifting Assembler',
-            'Stone Mason',
-          ],
-        };
-      }
-      return sectors;
-    }
-
-    final translatedSectors = getTranslatedSectors();
-    
     return Column(
       children: [
         DropdownButtonFormField<String>(
           decoration: InputDecoration(
-            labelText: tr('signup.company.mainSector'),
+            labelText: 'signup.form.mainSector'.tr(),
             prefixIcon: Icon(
               FontAwesomeIcons.industry,
               size: 20,
@@ -711,20 +703,60 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
             ),
           ),
           value: selectedMainSector,
-          items: translatedSectors.keys.map((String sector) {
+          items: [
+            tr('sectors.interiorDesign.name'),
+            tr('sectors.technicalEquipment.name'),
+            tr('sectors.buildingEnvelope.name'),
+            tr('sectors.structureConstruction.name'),
+          ].map((String value) {
             return DropdownMenuItem<String>(
-              value: sector,
-              child: Text(sector),
+              value: value,
+              child: Text(value),
             );
           }).toList(),
           onChanged: (String? newValue) {
             setState(() {
               selectedMainSector = newValue;
               selectedSubSector = null;
-              if (newValue != null) {
-                subSectors = translatedSectors[newValue] ?? [];
-              } else {
-                subSectors = [];
+              if (newValue == tr('sectors.interiorDesign.name')) {
+                subSectors = [
+                  tr('sectors.interiorDesign.subsectors.buildingCleaning'),
+                  tr('sectors.interiorDesign.subsectors.interiorDesigner'),
+                  tr('sectors.interiorDesign.subsectors.painter'),
+                  tr('sectors.interiorDesign.subsectors.plasterer'),
+                  tr('sectors.interiorDesign.subsectors.carpetLayer'),
+                  tr('sectors.interiorDesign.subsectors.tileSetter'),
+                ];
+              } else if (newValue == tr('sectors.technicalEquipment.name')) {
+                subSectors = [
+                  tr('sectors.technicalEquipment.subsectors.electrician'),
+                  tr('sectors.technicalEquipment.subsectors.plumber'),
+                  tr('sectors.technicalEquipment.subsectors.hvacInstaller'),
+                ];
+              } else if (newValue == tr('sectors.buildingEnvelope.name')) {
+                subSectors = [
+                  tr('sectors.buildingEnvelope.subsectors.ropeAccess'),
+                  tr('sectors.buildingEnvelope.subsectors.roofer'),
+                  tr('sectors.buildingEnvelope.subsectors.waterproofer'),
+                  tr('sectors.buildingEnvelope.subsectors.metalJoinery'),
+                  tr('sectors.buildingEnvelope.subsectors.glazier'),
+                  tr('sectors.buildingEnvelope.subsectors.blindInstaller'),
+                ];
+              } else if (newValue == tr('sectors.structureConstruction.name')) {
+                subSectors = [
+                  tr('sectors.structureConstruction.subsectors.woodCarpenter'),
+                  tr('sectors.structureConstruction.subsectors.machineOperator'),
+                  tr('sectors.structureConstruction.subsectors.woodConstructor'),
+                  tr('sectors.structureConstruction.subsectors.concreteConstructor'),
+                  tr('sectors.structureConstruction.subsectors.industrialFloorConstructor'),
+                  tr('sectors.structureConstruction.subsectors.metalConstructor'),
+                  tr('sectors.structureConstruction.subsectors.demolisher'),
+                  tr('sectors.structureConstruction.subsectors.craneOperator'),
+                  tr('sectors.structureConstruction.subsectors.mason'),
+                  tr('sectors.structureConstruction.subsectors.scaffoldErector'),
+                  tr('sectors.structureConstruction.subsectors.liftingAssembler'),
+                  tr('sectors.structureConstruction.subsectors.stoneCutter'),
+                ];
               }
             });
           },
@@ -735,11 +767,11 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
             return null;
           },
         ),
-        if (subSectors.isNotEmpty) ...[
+        if (selectedMainSector != null) ...[
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
             decoration: InputDecoration(
-              labelText: tr('signup.company.subSector'),
+              labelText: 'signup.form.subSector'.tr(),
               prefixIcon: Icon(
                 FontAwesomeIcons.toolbox,
                 size: 20,
@@ -763,10 +795,10 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
               ),
             ),
             value: selectedSubSector,
-            items: subSectors.map((String subSector) {
+            items: subSectors.map((String value) {
               return DropdownMenuItem<String>(
-                value: subSector,
-                child: Text(subSector),
+                value: value,
+                child: Text(value),
               );
             }).toList(),
             onChanged: (String? newValue) {

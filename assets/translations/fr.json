@@ -11,6 +11,79 @@
     "profile": "Profil",
     "settings": "Paramètres"
   },
+  "login": {
+    "title": "Bon retour",
+    "subtitle": "Connectez-vous pour continuer",
+    "email": "Email",
+    "emailHint": "Entrez votre email",
+    "password": "Mot de passe",
+    "passwordHint": "Entrez votre mot de passe",
+    "loginButton": "Se connecter",
+    "signupPrompt": "Vous n'avez pas de compte ?",
+    "signupButton": "S'inscrire",
+    "validation": {
+      "emailRequired": "Veuillez saisir votre email",
+      "emailInvalid": "Veuillez saisir un email valide",
+      "passwordRequired": "Veuillez saisir votre mot de passe"
+    },
+    "error": {
+      "invalidCredentials": "Email ou mot de passe invalide"
+    },
+    "success": "Connexion réussie"
+  },
+  "signup": {
+    "step1": "Étape 1 - Informations sur l'entreprise",
+    "step1of2": "Étape 1 sur 2",
+    "step2": "Étape 2 - Informations sur l'adresse",
+    "step2of2": "Étape 2 sur 2",
+    "form": {
+      "firstName": "Prénom",
+      "firstNameHint": "Entrez votre prénom",
+      "lastName": "Nom",
+      "lastNameHint": "Entrez votre nom",
+      "email": "Email",
+      "emailHint": "Entrez votre email",
+      "password": "Mot de passe",
+      "passwordHint": "Entrez votre mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "confirmPasswordHint": "Ré-entrez votre mot de passe",
+      "companyName": "Nom de l'entreprise",
+      "companyNameHint": "Entrez le nom de votre entreprise",
+      "legalStatus": "Statut juridique",
+      "legalStatusHint": "Sélectionnez votre statut juridique",
+      "position": "Position",
+      "positionHint": "Sélectionnez votre position",
+      "mainSector": "Secteur principal",
+      "mainSectorHint": "Sélectionnez votre secteur principal",
+      "subSector": "Sous-secteur",
+      "subSectorHint": "Sélectionnez votre sous-secteur",
+      "siretNumber": "Numéro SIRET",
+      "siretNumberHint": "Entrez votre numéro SIRET",
+      "street": "Rue",
+      "streetHint": "Entrez votre adresse",
+      "areaCode": "Code postal",
+      "areaCodeHint": "Entrez votre code postal",
+      "city": "Ville",
+      "cityHint": "Entrez votre ville",
+      "establishmentYear": "Année d'établissement",
+      "establishmentYearHint": "Sélectionnez l'année d'établissement",
+      "employeeNumber": "Nombre d'employés",
+      "employeeNumberHint": "Entrez le nombre d'employés",
+      "nextButton": "Suivant",
+      "backButton": "Retour",
+      "submitButton": "Soumettre"
+    },
+    "validation": {
+      "required": "{field} est requis",
+      "invalidEmail": "Veuillez saisir un email valide",
+      "passwordMismatch": "Les mots de passe ne correspondent pas",
+      "invalidNumber": "Veuillez saisir un nombre valide"
+    },
+    "success": "Inscription réussie",
+    "error": {
+      "general": "Une erreur s'est produite lors de l'inscription"
+    }
+  },
   "about": {
     "title": "À propos de nous"
   },
@@ -68,86 +141,82 @@
       "description": "Rejoignez des milliers de professionnels de la construction qui font confiance à Minidost"
     }
   },
-  "signup": {
-    "step1": "Étape 1 - Informations sur l'entreprise",
-    "step1of2": "Étape 1 sur 2",
-    "step2": "Étape 2 - Informations personnelles",
-    "step2of2": "Étape 2 sur 2",
-    "company": {
-      "legalStatus": "Statut juridique",
-      "companyName": "Nom de l'entreprise",
-      "position": "Poste",
-      "mainSector": "Secteur principal",
-      "subSector": "Sous-secteur",
-      "siretNumber": "Numéro SIRET",
-      "street": "Rue",
-      "areaCode": "Code postal",
-      "city": "Ville"
-    },
-    "personal": {
-      "firstName": "Prénom",
-      "lastName": "Nom",
+  "auth": {
+    "login": {
+      "title": "Bon retour",
+      "subtitle": "Connectez-vous pour continuer",
       "email": "Email",
-      "phone": "Téléphone",
+      "emailHint": "Entrez votre email",
       "password": "Mot de passe",
-      "confirmPassword": "Confirmer le mot de passe"
-    },
-    "validation": {
-      "required": "Ce champ est obligatoire",
-      "email": "Veuillez entrer un email valide",
-      "password": "Le mot de passe doit contenir au moins 6 caractères",
-      "passwordMatch": "Les mots de passe ne correspondent pas"
-    },
-    "buttons": {
-      "next": "Suivant",
-      "back": "Retour",
-      "submit": "Soumettre"
-    },
-    "sectors": {
-      "interiorDesign": {
-        "name": "Aménagement & finitions",
-        "subsectors": {
-          "buildingCleaning": "Nettoyage de Bâtiment",
-          "interiorDesigner": "Designer d'Intérieur",
-          "painter": "Peintre",
-          "plasterer": "Plâtrier",
-          "carpetLayer": "Poseur de Moquette",
-          "tileSetter": "Carreleur"
-        }
+      "passwordHint": "Entrez votre mot de passe",
+      "loginButton": "Se connecter",
+      "signupPrompt": "Vous n'avez pas de compte ?",
+      "signupButton": "S'inscrire",
+      "validation": {
+        "emailRequired": "Veuillez saisir votre email",
+        "emailInvalid": "Veuillez saisir un email valide",
+        "passwordRequired": "Veuillez saisir votre mot de passe"
       },
-      "technicalEquipment": {
-        "name": "Equipements techniques",
-        "subsectors": {
-          "electrician": "Électricien",
-          "plumber": "Plombier",
-          "hvacInstaller": "Installateur CVC"
-        }
+      "error": {
+        "invalidCredentials": "Email ou mot de passe invalide"
       },
-      "buildingEnvelope": {
-        "name": "Enveloppe extérieure",
-        "subsectors": {
-          "ropeAccessTechnician": "Technicien d'Accès par Corde",
-          "roofer": "Couvreur",
-          "waterproofer": "Étanchéiste",
-          "metalJoinery": "Menuiserie Métallique"
-        }
-      },
-      "structureConstruction": {
-        "name": "Structure & gros oeuvre",
-        "subsectors": {
-          "woodCarpenter": "Charpentier Bois",
-          "equipmentOperator": "Opérateur d'Équipement",
-          "woodConstructor": "Constructeur Bois",
-          "concreteConstructor": "Constructeur Béton",
-          "flooringConstructor": "Constructeur de Sol",
-          "metalConstructor": "Constructeur Métal",
-          "demolitionExpert": "Expert en Démolition",
-          "craneOperator": "Grutier",
-          "mason": "Maçon",
-          "scaffoldingAssembler": "Monteur d'Échafaudages",
-          "liftingEquipmentAssembler": "Monteur d'Équipements de Levage",
-          "stoneCutter": "Tailleur de Pierre"
-        }
+      "success": "Connexion réussie"
+    }
+  },
+  "welcome": {
+    "title": "Bienvenue sur Minidost",
+    "description": "Rejoignez des milliers de professionnels de la construction qui font confiance à Minidost"
+  },
+  "positions": {
+    "contractor": "Entrepreneur",
+    "subcontractor": "Sous-traitant"
+  },
+  "sectors": {
+    "interiorDesign": {
+      "name": "Aménagement & finitions",
+      "subsectors": {
+        "buildingCleaning": "Pro. Nettoyage du batiment",
+        "interiorDesigner": "Agenceur",
+        "painter": "Peintre",
+        "plasterer": "Platrier",
+        "carpetLayer": "Solier moquettiste",
+        "tileSetter": "Carreleur"
+      }
+    },
+    "technicalEquipment": {
+      "name": "Equipements techniques",
+      "subsectors": {
+        "electrician": "Electricien",
+        "plumber": "Plombier",
+        "hvacInstaller": "Instal. chauffage & clim."
+      }
+    },
+    "buildingEnvelope": {
+      "name": "Enveloppe extérieure",
+      "subsectors": {
+        "ropeAccess": "Cordiste",
+        "roofer": "Couvreur",
+        "waterproofer": "Etancheur",
+        "metalJoinery": "Menuiserie métallique",
+        "glazier": "Miroitier",
+        "blindInstaller": "Storiste"
+      }
+    },
+    "structureConstruction": {
+      "name": "Structure & gros oeuvre",
+      "subsectors": {
+        "woodCarpenter": "Charpentier bois",
+        "machineOperator": "Conducteur d'engins",
+        "woodConstructor": "Constructeur bois",
+        "concreteConstructor": "Constructeur en béton armé",
+        "industrialFloorConstructor": "Constructeur en sols industriels",
+        "metalConstructor": "Constructeur métallique",
+        "demolisher": "Démolisseur",
+        "craneOperator": "Grutier",
+        "mason": "Maçon",
+        "scaffoldErector": "Monteur d'échafaudage",
+        "liftingAssembler": "Monteur levageur",
+        "stoneCutter": "Tailleur de pierre"
       }
     }
   }

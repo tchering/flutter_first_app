@@ -1,0 +1,20 @@
+{
+  "title": "Welcome Back",
+  "subtitle": "Sign in to continue",
+  "email": "Email",
+  "emailHint": "Enter your email",
+  "password": "Password",
+  "passwordHint": "Enter your password",
+  "loginButton": "Login",
+  "signupPrompt": "Don't have an account?",
+  "signupButton": "Sign Up",
+  "validation": {
+    "emailRequired": "Please enter your email",
+    "emailInvalid": "Please enter a valid email",
+    "passwordRequired": "Please enter your password"
+  },
+  "error": {
+    "invalidCredentials": "Invalid email or password"
+  },
+  "success": "Successfully logged in"
+}

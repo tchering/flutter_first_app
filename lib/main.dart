@@ -16,6 +16,7 @@ void main() async {
     fallbackLocale: const Locale('fr'),
     startLocale: const Locale('fr'),
     useOnlyLangCode: true,
+    assetLoader: RootBundleAssetLoader(),
     child: const MyApp(),
   ));
 }

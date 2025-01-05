@@ -1,0 +1,20 @@
+{
+  "title": "Bon retour",
+  "subtitle": "Connectez-vous pour continuer",
+  "email": "Email",
+  "emailHint": "Entrez votre email",
+  "password": "Mot de passe",
+  "passwordHint": "Entrez votre mot de passe",
+  "loginButton": "Se connecter",
+  "signupPrompt": "Vous n'avez pas de compte ?",
+  "signupButton": "S'inscrire",
+  "validation": {
+    "emailRequired": "Veuillez saisir votre email",
+    "emailInvalid": "Veuillez saisir un email valide",
+    "passwordRequired": "Veuillez saisir votre mot de passe"
+  },
+  "error": {
+    "invalidCredentials": "Email ou mot de passe invalide"
+  },
+  "success": "Connexion réussie"
+}

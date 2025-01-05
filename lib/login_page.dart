@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_first_app/screens/signup_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_first_app/services/api_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,7 +12,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
-  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
@@ -48,7 +50,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
 
   @override
   void dispose() {
-    usernameController.dispose();
+    emailController.dispose();
     passwordController.dispose();
     _animationController.dispose();
     super.dispose();
@@ -59,13 +61,33 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
 
     setState(() => _isLoading = true);
 
-    // Simulate network delay
-    await Future.delayed(const Duration(seconds: 2));
+    try {
+      final response = await ApiService.login(
+        emailController.text,
+        passwordController.text,
+      );
 
-    if (!mounted) return;
+      if (!mounted) return;
 
-    setState(() => _isLoading = false);
-    Navigator.pop(context);
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('login.success'.tr())),
+      );
+
+      // Navigate back
+      Navigator.pop(context);
+    } catch (e) {
+      if (!mounted) return;
+
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 
   @override
@@ -146,7 +168,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
 
                             // Welcome Text
                             Text(
-                              'Welcome Back',
+                              'login.title'.tr(),
                               style: theme.textTheme.headlineSmall?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black87,
@@ -154,7 +176,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Sign in to continue',
+                              'login.subtitle'.tr(),
                               style: theme.textTheme.bodyLarge?.copyWith(
                                 color: Colors.grey[600],
                               ),
@@ -166,14 +188,15 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                               key: _formKey,
                               child: Column(
                                 children: [
-                                  // Username field
+                                  // Email field
                                   TextFormField(
-                                    controller: usernameController,
+                                    controller: emailController,
+                                    keyboardType: TextInputType.emailAddress,
                                     decoration: InputDecoration(
-                                      labelText: 'Username',
-                                      hintText: 'Enter your username',
+                                      labelText: 'login.email'.tr(),
+                                      hintText: 'login.emailHint'.tr(),
                                       prefixIcon: Icon(
-                                        FontAwesomeIcons.user,
+                                        FontAwesomeIcons.envelope,
                                         size: 20,
                                         color: theme.primaryColor,
                                       ),
@@ -196,7 +219,10 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                     ),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'Please enter your username';
+                                        return 'login.validation.emailRequired'.tr();
+                                      }
+                                      if (!value.contains('@')) {
+                                        return 'login.validation.emailInvalid'.tr();
                                       }
                                       return null;
                                     },
@@ -208,8 +234,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                     controller: passwordController,
                                     obscureText: !_isPasswordVisible,
                                     decoration: InputDecoration(
-                                      labelText: 'Password',
-                                      hintText: 'Enter your password',
+                                      labelText: 'login.password'.tr(),
+                                      hintText: 'login.passwordHint'.tr(),
                                       prefixIcon: Icon(
                                         FontAwesomeIcons.lock,
                                         size: 20,
@@ -247,7 +273,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                     ),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'Please enter your password';
+                                        return 'login.validation.passwordRequired'.tr();
                                       }
                                       return null;
                                     },
@@ -280,26 +306,24 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                           ),
                                         ),
                                       )
-                                    : const Text(
-                                        'Login',
-                                        style: TextStyle(
+                                    : Text(
+                                        'login.loginButton'.tr(),
+                                        style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                               ),
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 24),
 
-                            // Sign up text
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            // Sign up link
+                            Wrap(
+                              alignment: WrapAlignment.center,
                               children: [
                                 Text(
-                                  "Don't have an account? ",
-                                  style: TextStyle(
-                                    color: Colors.grey[600],
-                                  ),
+                                  'login.signupPrompt'.tr(),
+                                  style: TextStyle(color: Colors.grey[600]),
                                 ),
                                 TextButton(
                                   onPressed: () {
@@ -311,7 +335,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                     );
                                   },
                                   child: Text(
-                                    'Sign Up',
+                                    'login.signupButton'.tr(),
                                     style: TextStyle(
                                       color: theme.primaryColor,
                                       fontWeight: FontWeight.bold,

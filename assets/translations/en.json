@@ -11,6 +11,79 @@
     "profile": "Profile",
     "settings": "Settings"
   },
+  "login": {
+    "title": "Welcome Back",
+    "subtitle": "Sign in to continue",
+    "email": "Email",
+    "emailHint": "Enter your email",
+    "password": "Password",
+    "passwordHint": "Enter your password",
+    "loginButton": "Login",
+    "signupPrompt": "Don't have an account?",
+    "signupButton": "Sign Up",
+    "validation": {
+      "emailRequired": "Please enter your email",
+      "emailInvalid": "Please enter a valid email",
+      "passwordRequired": "Please enter your password"
+    },
+    "error": {
+      "invalidCredentials": "Invalid email or password"
+    },
+    "success": "Successfully logged in"
+  },
+  "signup": {
+    "step1": "Step 1 - Company Information",
+    "step1of2": "Step 1 of 2",
+    "step2": "Step 2 - Address Information",
+    "step2of2": "Step 2 of 2",
+    "form": {
+      "firstName": "First Name",
+      "firstNameHint": "Enter your first name",
+      "lastName": "Last Name",
+      "lastNameHint": "Enter your last name",
+      "email": "Email",
+      "emailHint": "Enter your email",
+      "password": "Password",
+      "passwordHint": "Enter your password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordHint": "Re-enter your password",
+      "companyName": "Company Name",
+      "companyNameHint": "Enter your company name",
+      "legalStatus": "Legal Status",
+      "legalStatusHint": "Select your legal status",
+      "position": "Position",
+      "positionHint": "Select your position",
+      "mainSector": "Main Sector",
+      "mainSectorHint": "Select your main sector",
+      "subSector": "Sub Sector",
+      "subSectorHint": "Select your sub sector",
+      "siretNumber": "SIRET Number",
+      "siretNumberHint": "Enter your SIRET number",
+      "street": "Street",
+      "streetHint": "Enter your street address",
+      "areaCode": "Area Code",
+      "areaCodeHint": "Enter your area code",
+      "city": "City",
+      "cityHint": "Enter your city",
+      "establishmentYear": "Establishment Year",
+      "establishmentYearHint": "Select establishment year",
+      "employeeNumber": "Number of Employees",
+      "employeeNumberHint": "Enter number of employees",
+      "nextButton": "Next",
+      "backButton": "Back",
+      "submitButton": "Submit"
+    },
+    "validation": {
+      "required": "{field} is required",
+      "invalidEmail": "Please enter a valid email",
+      "passwordMismatch": "Passwords do not match",
+      "invalidNumber": "Please enter a valid number"
+    },
+    "success": "Successfully registered",
+    "error": {
+      "general": "An error occurred during registration"
+    }
+  },
   "about": {
     "title": "About Us"
   },
@@ -68,87 +141,30 @@
       "description": "Join thousands of construction professionals who trust Minidost"
     }
   },
-  "signup": {
-    "step1": "Step 1 - Company Information",
-    "step1of2": "Step 1 of 2",
-    "step2": "Step 2 - Personal Information",
-    "step2of2": "Step 2 of 2",
-    "company": {
-      "legalStatus": "Legal Status",
-      "companyName": "Company Name",
-      "position": "Position",
-      "mainSector": "Main Sector",
-      "subSector": "Sub Sector",
-      "siretNumber": "SIRET Number",
-      "street": "Street",
-      "areaCode": "Area Code",
-      "city": "City"
-    },
-    "personal": {
-      "firstName": "First Name",
-      "lastName": "Last Name",
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to continue",
       "email": "Email",
-      "phone": "Phone",
+      "emailHint": "Enter your email",
       "password": "Password",
-      "confirmPassword": "Confirm Password"
-    },
-    "validation": {
-      "required": "This field is required",
-      "email": "Please enter a valid email",
-      "password": "Password must be at least 6 characters",
-      "passwordMatch": "Passwords do not match"
-    },
-    "buttons": {
-      "next": "Next",
-      "back": "Back",
-      "submit": "Submit"
-    },
-    "sectors": {
-      "interiorDesign": {
-        "name": "Interior Design",
-        "subsectors": {
-          "buildingCleaning": "Building Cleaning",
-          "interiorDesigner": "Interior Designer",
-          "painter": "Painter",
-          "plasterer": "Plasterer",
-          "carpetLayer": "Carpet Layer",
-          "tileSetter": "Tile Setter"
-        }
+      "passwordHint": "Enter your password",
+      "loginButton": "Login",
+      "signupPrompt": "Don't have an account?",
+      "signupButton": "Sign Up",
+      "validation": {
+        "emailRequired": "Please enter your email",
+        "emailInvalid": "Please enter a valid email",
+        "passwordRequired": "Please enter your password"
       },
-      "technicalEquipment": {
-        "name": "Technical Equipment",
-        "subsectors": {
-          "electrician": "Electrician",
-          "plumber": "Plumber",
-          "hvacInstaller": "HVAC Installer"
-        }
+      "error": {
+        "invalidCredentials": "Invalid email or password"
       },
-      "buildingEnvelope": {
-        "name": "Building Envelope",
-        "subsectors": {
-          "ropeAccessTechnician": "Rope Access Technician",
-          "roofer": "Roofer",
-          "waterproofer": "Waterproofer",
-          "metalJoinery": "Metal Joinery"
-        }
-      },
-      "structureConstruction": {
-        "name": "Structure Construction",
-        "subsectors": {
-          "woodCarpenter": "Wood Carpenter",
-          "equipmentOperator": "Equipment Operator",
-          "woodConstructor": "Wood Constructor",
-          "concreteConstructor": "Concrete Constructor",
-          "flooringConstructor": "Flooring Constructor",
-          "metalConstructor": "Metal Constructor",
-          "demolitionExpert": "Demolition Expert",
-          "craneOperator": "Crane Operator",
-          "mason": "Mason",
-          "scaffoldingAssembler": "Scaffolding Assembler",
-          "liftingEquipmentAssembler": "Lifting Equipment Assembler",
-          "stoneCutter": "Stone Cutter"
-        }
-      }
+      "success": "Successfully logged in"
     }
+  },
+  "welcome": {
+    "title": "Welcome to Minidost",
+    "description": "Join thousands of construction professionals who trust Minidost"
   }
 }
