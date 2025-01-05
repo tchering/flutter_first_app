@@ -234,7 +234,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         const Padding(
           padding: EdgeInsets.only(left: 8.0, bottom: 16.0),
           child: Text(
-            'Projects Overview',
+            'Project Overview',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -250,52 +250,52 @@ class _DashboardScreenState extends State<DashboardScreen> {
           childAspectRatio: 1.7,
           children: [
             _buildAnalyticsCard(
-              icon: FontAwesomeIcons.briefcase,
+              icon: FontAwesomeIcons.tasks,
               value: '${_projectStatistics['total_projects'] ?? 0}',
-              label: tr('total_projects'),
+              label: 'Total Projects',
               color: Colors.blue,
               hasNotification: false,
             ),
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.clock,
               value: '${_projectStatistics['pending_projects'] ?? 0}',
-              label: tr('pending'),
+              label: 'pending',
               color: Colors.orange,
               hasNotification: false,
             ),
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.hammer,
               value: '${_projectStatistics['active_projects'] ?? 0}',
-              label: tr('active'),
+              label: 'active',
               color: Colors.green,
               hasNotification: _projectStatistics['active_tasks_applications_count'] != null && 
-                               _projectStatistics['active_tasks_applications_count'] > 0,
+                             _projectStatistics['active_tasks_applications_count'] > 0,
               notificationCount: '${_projectStatistics['active_tasks_applications_count'] ?? 0}',
-              notificationLabel: tr('applications'),
+              notificationLabel: 'pending applications',
             ),
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.spinner,
               value: '${_projectStatistics['in_progress_projects'] ?? 0}',
-              label: tr('in_progress'),
-              color: Colors.teal,
+              label: 'in_progress',
+              color: Colors.purple,
               hasNotification: false,
             ),
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.checkDouble,
               value: '${_projectStatistics['completed_projects'] ?? 0}',
-              label: tr('completed'),
-              color: Colors.purple,
+              label: 'completed',
+              color: Colors.teal,
               hasNotification: false,
             ),
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.checkCircle,
               value: '${_projectStatistics['approved_applications'] ?? 0}',
-              label: tr('tasks_approved'),
+              label: 'tasks_approved',
               color: Colors.indigo,
               hasNotification: _projectStatistics['tasks_without_contracts'] != null && 
-                               _projectStatistics['tasks_without_contracts'] > 0,
+                             _projectStatistics['tasks_without_contracts'] > 0,
               notificationCount: '${_projectStatistics['tasks_without_contracts'] ?? 0}',
-              notificationLabel: tr('generate_contract'),
+              notificationLabel: 'generate_contract',
             ),
           ],
         ),
@@ -385,6 +385,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           // Map labels to API status values
           String status;
           switch (label.toLowerCase()) {
+            case 'total projects':
+              status = 'all';
+              break;
+            case 'tasks_approved':
+              status = 'approved';
+              break;
             case 'applications_approved':
               status = 'approved';
               break;

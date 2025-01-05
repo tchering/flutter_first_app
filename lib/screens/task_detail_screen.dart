@@ -240,41 +240,170 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFF5F7FA),
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Text(
-          'Task Details', 
-          style: TextStyle(
-            color: Colors.blueGrey.shade800,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-        actions: _buildAppBarActions(),
-        iconTheme: IconThemeData(color: Colors.blueGrey.shade800),
-      ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : _errorMessage != null
-              ? Center(child: Text(_errorMessage!))
-              : SingleChildScrollView(
+  Widget _buildContractorInfo() {
+    final Map<String, dynamic>? subcontractor = _taskDetails['subcontractor'];
+    
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Project Team',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            
+            // Contractor Section
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  backgroundColor: Colors.grey[200],
+                  child: Icon(
+                    Icons.business,
+                    size: 30,
+                    color: Colors.grey[400],
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildTaskDetailBody(),
-                      SizedBox(height: 16),
-                      Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: _buildActionButtons(),
+                      const Text(
+                        'Contractor',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Text(
+                        _taskDetails['contractor_name'] ?? 'Unknown Contractor',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
                 ),
+              ],
+            ),
+
+            if (subcontractor != null) ...[
+              const Divider(height: 32),
+              // Subcontractor Section
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.grey[200],
+                    child: Icon(
+                      Icons.engineering,
+                      size: 30,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Subcontractor',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                          ),
+                        ),
+                        Text(
+                          subcontractor['company_name'] ?? 'Unknown Subcontractor',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        if (subcontractor['phone_number'] != null)
+                          Text(
+                            subcontractor['phone_number'],
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 14,
+                            ),
+                          ),
+                        if (subcontractor['email'] != null)
+                          Text(
+                            subcontractor['email'],
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 14,
+                            ),
+                          ),
+                        if (subcontractor['street'] != null && 
+                            subcontractor['city'] != null && 
+                            subcontractor['area_code'] != null)
+                          Text(
+                            '${subcontractor['street']}, ${subcontractor['city']} ${subcontractor['area_code']}',
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 14,
+                            ),
+                          ),
+                        if (subcontractor['siret_number'] != null)
+                          Text(
+                            'SIRET: ${subcontractor['siret_number']}',
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 14,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_taskDetails['site_name'] ?? 'Task Details'),
+      ),
+      body: _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : _errorMessage != null
+          ? Center(child: Text(_errorMessage!))
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildTaskHeader(),
+                  const SizedBox(height: 16),
+                  _buildContractorInfo(),
+                  const SizedBox(height: 16),
+                  _buildTaskDetailBody(),
+                  if (!widget.isContractor) ...[
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: _buildActionButtons(),
+                    ),
+                  ],
+                ],
+              ),
+            ),
     );
   }
 
@@ -323,60 +452,78 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
     );
   }
 
-  Widget _buildTaskDetailBody() {
+  Widget _buildTaskHeader() {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
     return Card(
-      margin: EdgeInsets.all(16),
+      margin: const EdgeInsets.all(16),
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.business,
+                  size: 30,
+                  color: Colors.grey[400],
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _taskDetails['site_name'] ?? '',
+                        style: textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: colorScheme.primary,
+                        ),
+                      ),
+                      Text(
+                        _taskDetails['contractor_name'] ?? '',
+                        style: textTheme.titleMedium,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTaskDetailBody() {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Card(
+      margin: const EdgeInsets.all(16),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header with company info
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: _taskDetails['contractor_logo'] != null
-                        ? NetworkImage(_taskDetails['contractor_logo'])
-                        : AssetImage('assets/images/default_logo1.png') as ImageProvider,
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _taskDetails['site_name'] ?? '',
-                          style: textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: colorScheme.primary,
-                          ),
-                        ),
-                        Text(
-                          _taskDetails['contractor_name'] ?? '',
-                          style: textTheme.titleMedium,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 24),
-
               // Location
               _buildInfoRow(
                 Icons.location_on,
                 '${_taskDetails['street']}, ${_taskDetails['city']}',
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Dates
               _buildInfoRow(
@@ -384,13 +531,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                 'Start: ${DateFormat('MMM d, yyyy').format(DateTime.parse(_taskDetails['start_date']))}',
               ),
               if (_taskDetails['end_date'] != null) ...[
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 _buildInfoRow(
                   Icons.event,
                   'End: ${DateFormat('MMM d, yyyy').format(DateTime.parse(_taskDetails['end_date']))}',
                 ),
               ],
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Price
               if (_taskDetails['proposed_price'] != null)
@@ -399,7 +546,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                   'Proposed Price: ${_formatPrice(_taskDetails['proposed_price'])}',
                 ),
 
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
 
               // Task Details Section
               Text(
@@ -408,7 +555,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Text Attributes
               if (_taskDetails['text_attributes'] != null) ...[
@@ -425,12 +572,12 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                           color: Colors.grey[600],
                         ),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         entry.value.toString(),
                         style: textTheme.bodyLarge,
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                     ],
                   );
                 }).toList(),
@@ -445,13 +592,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 ..._taskDetails['measurements'].entries.map((entry) {
                   final label = entry.key.toString().replaceAll('_', ' ').split(' ')
                     .map((word) => word.isEmpty ? '' : '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}')
                     .join(' ');
                   return Padding(
-                    padding: EdgeInsets.only(bottom: 8.0),
+                    padding: const EdgeInsets.only(bottom: 8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -469,7 +616,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                     ),
                   );
                 }).toList(),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
               ],
 
               // Services
@@ -481,7 +628,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -518,7 +665,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
           icon,
           color: Colors.grey[600],
         ),
-        SizedBox(width: 8),
+        const SizedBox(width: 8),
         Expanded(
           child: Text(
             text,
