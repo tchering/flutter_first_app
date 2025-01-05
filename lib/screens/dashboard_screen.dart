@@ -272,11 +272,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
               notificationLabel: tr('applications'),
             ),
             _buildAnalyticsCard(
+              icon: FontAwesomeIcons.spinner,
+              value: '${_projectStatistics['in_progress_projects'] ?? 0}',
+              label: tr('in_progress'),
+              color: Colors.teal,
+              hasNotification: false,
+            ),
+            _buildAnalyticsCard(
               icon: FontAwesomeIcons.checkDouble,
               value: '${_projectStatistics['completed_projects'] ?? 0}',
               label: tr('completed'),
               color: Colors.purple,
               hasNotification: false,
+            ),
+            _buildAnalyticsCard(
+              icon: FontAwesomeIcons.checkCircle,
+              value: '${_projectStatistics['approved_applications'] ?? 0}',
+              label: tr('tasks_approved'),
+              color: Colors.indigo,
+              hasNotification: _projectStatistics['tasks_without_contracts'] != null && 
+                               _projectStatistics['tasks_without_contracts'] > 0,
+              notificationCount: '${_projectStatistics['tasks_without_contracts'] ?? 0}',
+              notificationLabel: tr('generate_contract'),
             ),
           ],
         ),
