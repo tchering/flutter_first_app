@@ -189,4 +189,89 @@ class ApiService {
       rethrow;
     }
   }
+
+  static Future<List<Map<String, dynamic>>> fetchTasksByStatus({
+    required String status, 
+    bool isContractor = true
+  }) async {
+    try {
+      final token = await AuthService.getToken();
+      if (token == null) {
+        throw Exception('No authentication token found');
+      }
+
+      final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+
+      print('Attempting to fetch tasks with status: $status');
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/tasks?status=$status&is_contractor=${isContractor.toString()}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': formattedToken,
+          'Accept': 'application/json',
+        },
+      );
+
+      print('Tasks Response status: ${response.statusCode}');
+      print('Tasks Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        return List<Map<String, dynamic>>.from(jsonDecode(response.body));
+      } else {
+        Map<String, dynamic> errorData;
+        try {
+          errorData = jsonDecode(response.body);
+        } catch (e) {
+          throw Exception('Failed to parse error response: ${response.body}');
+        }
+        throw Exception(errorData['error'] ?? 'Failed to fetch tasks');
+      }
+    } catch (e) {
+      print('Error in fetchTasksByStatus: $e');
+      rethrow;
+    }
+  }
+
+  static Future<Map<String, dynamic>> fetchTaskDetails({
+    required int taskId
+  }) async {
+    try {
+      final token = await AuthService.getToken();
+      if (token == null) {
+        throw Exception('No authentication token found');
+      }
+
+      final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+
+      print('Attempting to fetch task details for task ID: $taskId');
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/tasks/$taskId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': formattedToken,
+          'Accept': 'application/json',
+        },
+      );
+
+      print('Task Details Response status: ${response.statusCode}');
+      print('Task Details Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        Map<String, dynamic> errorData;
+        try {
+          errorData = jsonDecode(response.body);
+        } catch (e) {
+          throw Exception('Failed to parse error response: ${response.body}');
+        }
+        throw Exception(errorData['error'] ?? 'Failed to fetch task details');
+      }
+    } catch (e) {
+      print('Error in fetchTaskDetails: $e');
+      rethrow;
+    }
+  }
 }

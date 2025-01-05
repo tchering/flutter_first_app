@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../services/api_service.dart';
+import '../screens/task_list_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   final bool isContractor;
@@ -372,7 +373,43 @@ class _DashboardScreenState extends State<DashboardScreen> {
         borderRadius: BorderRadius.circular(16),
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          // Determine the status based on the label
+          String status;
+          switch (label) {
+            case 'Total Projects':
+              status = 'all';
+              break;
+            case 'Pending':
+              status = 'pending';
+              break;
+            case 'Active':
+              status = 'active';
+              break;
+            case 'In Progress':
+              status = 'in progress';
+              break;
+            case 'Completed':
+              status = 'completed';
+              break;
+            case 'Travaux Approved':
+              status = 'approved';
+              break;
+            default:
+              status = label.toLowerCase();
+          }
+
+          // Navigate to TaskListScreen
+          Navigator.push(
+            context, 
+            MaterialPageRoute(
+              builder: (context) => TaskListScreen(
+                status: status, 
+                isContractor: widget.isContractor
+              )
+            )
+          );
+        },
         borderRadius: BorderRadius.circular(16),
         child: Container(
           padding: const EdgeInsets.all(12),
