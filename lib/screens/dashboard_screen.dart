@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../services/api_service.dart';
 
 class DashboardScreen extends StatefulWidget {
   final bool isContractor;
@@ -16,6 +17,30 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
+  Map<String, dynamic> _userProfile = {};
+  bool _isLoading = true;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserProfile();
+  }
+
+  Future<void> _fetchUserProfile() async {
+    try {
+      final userProfile = await ApiService.fetchUserProfile();
+      setState(() {
+        _userProfile = userProfile;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +48,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
       appBar: AppBar(
         title: Text(widget.isContractor ? tr('contractor_dashboard') : tr('subcontractor_dashboard')),
       ),
-      body: _buildBody(),
+      body: _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : _errorMessage != null
+          ? Center(child: Text(_errorMessage!))
+          : _buildBody(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
@@ -94,14 +123,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const CircleAvatar(
+            CircleAvatar(
               radius: 50,
-              backgroundImage: AssetImage('assets/images/default_logo.png'),
+              backgroundImage: _userProfile['logo_url'] != null
+                ? NetworkImage(_userProfile['logo_url'])
+                : const AssetImage('assets/images/default_logo.png') as ImageProvider,
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Company Name',
-              style: TextStyle(
+            Text(
+              _userProfile['company_name'] ?? 'Company Name',
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -109,7 +140,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: 8),
             Chip(
               label: Text(
-                widget.isContractor ? tr('contractor') : tr('subcontractor'),
+                _userProfile['position'] ?? (widget.isContractor ? tr('contractor') : tr('subcontractor')),
                 style: const TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.blue,
@@ -123,22 +154,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildContactInfo() {
-    return const Column(
+    return Column(
       children: [
         ListTile(
-          leading: Icon(Icons.email),
-          title: Text('Email'),
-          subtitle: Text('company@example.com'),
+          leading: const Icon(Icons.email),
+          title: const Text('Email'),
+          subtitle: Text(_userProfile['email'] ?? 'N/A'),
         ),
         ListTile(
-          leading: Icon(Icons.phone),
-          title: Text('Phone'),
-          subtitle: Text('+1 234 567 8900'),
+          leading: const Icon(Icons.phone),
+          title: const Text('Phone'),
+          subtitle: Text(_userProfile['phone'] ?? 'N/A'),
         ),
         ListTile(
-          leading: Icon(Icons.location_on),
-          title: Text('Location'),
-          subtitle: Text('San Francisco, CA'),
+          leading: const Icon(Icons.location_on),
+          title: const Text('Location'),
+          subtitle: Text(_userProfile['address'] ?? 'N/A'),
+        ),
+        ListTile(
+          leading: const Icon(Icons.calendar_today),
+          title: const Text('Member Since'),
+          subtitle: Text(_formatMemberSince(_userProfile['created_at'])),
         ),
       ],
     );
@@ -417,5 +453,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       ),
     );
+  }
+
+  String _formatMemberSince(String? createdAt) {
+    if (createdAt == null) return 'N/A';
+    try {
+      final DateTime parsedDate = DateTime.parse(createdAt);
+      return DateFormat('MMMM dd, yyyy').format(parsedDate);
+    } catch (e) {
+      return 'N/A';
+    }
   }
 }

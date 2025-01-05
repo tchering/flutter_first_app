@@ -25,7 +25,8 @@ class AuthService {
   // Get auth token
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_tokenKey);
+    final token = prefs.getString(_tokenKey);
+    return token != null ? 'Bearer $token' : null;
   }
 
   // Check if user is logged in
