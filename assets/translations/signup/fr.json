@@ -24,48 +24,50 @@
     },
     "sectors": {
       "interiorDesign": {
-        "name": "Design d'intérieur & Finition",
+        "name": "Aménagement & finitions",
         "subsectors": {
-          "buildingCleaning": "Pro. du nettoyage",
-          "interiorDesigner": "Designer d'intérieur",
+          "buildingCleaning": "Pro. Nettoyage du batiment",
+          "interiorDesigner": "Agenceur",
           "painter": "Peintre",
-          "plasterer": "Plâtrier",
-          "carpetLayer": "Poseur de moquette",
+          "plasterer": "Platrier",
+          "carpetLayer": "Solier moquettiste",
           "tileSetter": "Carreleur"
         }
       },
       "technicalEquipment": {
-        "name": "Équipement technique",
+        "name": "Equipements techniques",
         "subsectors": {
-          "electrician": "Électricien",
+          "electrician": "Electricien",
           "plumber": "Plombier",
-          "hvacInstaller": "Installateur CVC"
+          "hvacInstaller": "Instal. chauffage & clim."
         }
       },
       "buildingEnvelope": {
-        "name": "Enveloppe du bâtiment",
+        "name": "Enveloppe extérieure",
         "subsectors": {
-          "ropeAccessTechnician": "Technicien cordiste",
+          "ropeAccessTechnician": "Cordiste",
           "roofer": "Couvreur",
-          "waterproofer": "Étanchéiste",
-          "metalJoinery": "Menuiserie métallique"
+          "waterproofer": "Etancheur",
+          "metalJoinery": "Menuiserie métallique",
+          "glazier": "Miroitier",
+          "blindInstaller": "Storiste"
         }
       },
       "structureConstruction": {
-        "name": "Structure & Construction",
+        "name": "Structure & gros oeuvre",
         "subsectors": {
-          "woodCarpenter": "Menuisier bois",
-          "equipmentOperator": "Opérateur d'équipement",
+          "woodCarpenter": "Charpentier bois",
+          "machineOperator": "Conducteur d'engins",
           "woodConstructor": "Constructeur bois",
-          "concreteConstructor": "Constructeur béton armé",
-          "flooringConstructor": "Constructeur sol industriel",
+          "concreteConstructor": "Constructeur en béton armé",
+          "flooringConstructor": "Constructeur en sols industriels",
           "metalConstructor": "Constructeur métallique",
-          "demolitionExpert": "Expert en démolition",
+          "demolitionWorker": "Démolisseur",
           "craneOperator": "Grutier",
           "mason": "Maçon",
-          "scaffoldingAssembler": "Monteur d'échafaudages",
-          "liftingEquipmentAssembler": "Monteur d'équipements de levage",
-          "stoneCutter": "Tailleur de pierre"
+          "scaffoldingAssembler": "Monteur d'échafaudage",
+          "liftingAssembler": "Monteur levageur",
+          "stoneMason": "Tailleur de pierre"
         }
       }
     },

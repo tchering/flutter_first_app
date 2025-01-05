@@ -6,37 +6,39 @@ class ActivitySector {
   static Map<String, List<String>> getSectors(BuildContext context) {
     return {
       tr('signup.sectors.interiorDesign.name'): [
-        tr('signup.sectors.interiorDesign.subsectors.buildingCleaning'),
-        tr('signup.sectors.interiorDesign.subsectors.interiorDesigner'),
-        tr('signup.sectors.interiorDesign.subsectors.painter'),
-        tr('signup.sectors.interiorDesign.subsectors.plasterer'),
-        tr('signup.sectors.interiorDesign.subsectors.carpetLayer'),
-        tr('signup.sectors.interiorDesign.subsectors.tileSetter'),
+        'Pro. Nettoyage du batiment',
+        'Agenceur',
+        'Peintre',
+        'Platrier',
+        'Solier moquettiste',
+        'Carreleur',
       ],
       tr('signup.sectors.technicalEquipment.name'): [
-        tr('signup.sectors.technicalEquipment.subsectors.electrician'),
-        tr('signup.sectors.technicalEquipment.subsectors.plumber'),
-        tr('signup.sectors.technicalEquipment.subsectors.hvacInstaller'),
+        'Electricien',
+        'Plombier',
+        'Instal. chauffage & clim.',
       ],
       tr('signup.sectors.buildingEnvelope.name'): [
-        tr('signup.sectors.buildingEnvelope.subsectors.ropeAccessTechnician'),
-        tr('signup.sectors.buildingEnvelope.subsectors.roofer'),
-        tr('signup.sectors.buildingEnvelope.subsectors.waterproofer'),
-        tr('signup.sectors.buildingEnvelope.subsectors.metalJoinery'),
+        'Cordiste',
+        'Couvreur',
+        'Etancheur',
+        'Menuiserie métallique',
+        'Miroitier',
+        'Storiste',
       ],
       tr('signup.sectors.structureConstruction.name'): [
-        tr('signup.sectors.structureConstruction.subsectors.woodCarpenter'),
-        tr('signup.sectors.structureConstruction.subsectors.equipmentOperator'),
-        tr('signup.sectors.structureConstruction.subsectors.woodConstructor'),
-        tr('signup.sectors.structureConstruction.subsectors.concreteConstructor'),
-        tr('signup.sectors.structureConstruction.subsectors.flooringConstructor'),
-        tr('signup.sectors.structureConstruction.subsectors.metalConstructor'),
-        tr('signup.sectors.structureConstruction.subsectors.demolitionExpert'),
-        tr('signup.sectors.structureConstruction.subsectors.craneOperator'),
-        tr('signup.sectors.structureConstruction.subsectors.mason'),
-        tr('signup.sectors.structureConstruction.subsectors.scaffoldingAssembler'),
-        tr('signup.sectors.structureConstruction.subsectors.liftingEquipmentAssembler'),
-        tr('signup.sectors.structureConstruction.subsectors.stoneCutter'),
+        'Charpentier bois',
+        'Conducteur d\'engins',
+        'Constructeur bois',
+        'Constructeur en béton armé',
+        'Constructeur en sols industriels',
+        'Constructeur métallique',
+        'Démolisseur',
+        'Grutier',
+        'Maçon',
+        'Monteur d\'échafaudage',
+        'Monteur levageur',
+        'Tailleur de pierre',
       ],
     };
   }
@@ -633,6 +635,54 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
   }
 
   Widget _buildActivitySectorDropdowns(ThemeData theme) {
+    final sectors = ActivitySector.getSectors(context);
+    final currentLocale = context.locale.languageCode;
+    
+    Map<String, List<String>> getTranslatedSectors() {
+      if (currentLocale == 'en') {
+        return {
+          tr('signup.sectors.interiorDesign.name'): [
+            'Building Cleaning Pro.',
+            'Interior Designer',
+            'Painter',
+            'Plasterer',
+            'Carpet Layer',
+            'Tile Setter',
+          ],
+          tr('signup.sectors.technicalEquipment.name'): [
+            'Electrician',
+            'Plumber',
+            'HVAC Installer',
+          ],
+          tr('signup.sectors.buildingEnvelope.name'): [
+            'Rope Access Technician',
+            'Roofer',
+            'Waterproofer',
+            'Metal Joinery',
+            'Glazier',
+            'Blind Installer',
+          ],
+          tr('signup.sectors.structureConstruction.name'): [
+            'Wood Carpenter',
+            'Machine Operator',
+            'Wood Constructor',
+            'Reinforced Concrete Constructor',
+            'Industrial Flooring Constructor',
+            'Metal Constructor',
+            'Demolition Worker',
+            'Crane Operator',
+            'Mason',
+            'Scaffolding Assembler',
+            'Lifting Assembler',
+            'Stone Mason',
+          ],
+        };
+      }
+      return sectors;
+    }
+
+    final translatedSectors = getTranslatedSectors();
+    
     return Column(
       children: [
         DropdownButtonFormField<String>(
@@ -661,7 +711,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
             ),
           ),
           value: selectedMainSector,
-          items: ActivitySector.getSectors(context).keys.map((String sector) {
+          items: translatedSectors.keys.map((String sector) {
             return DropdownMenuItem<String>(
               value: sector,
               child: Text(sector),
@@ -672,7 +722,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
               selectedMainSector = newValue;
               selectedSubSector = null;
               if (newValue != null) {
-                subSectors = ActivitySector.getSectors(context)[newValue] ?? [];
+                subSectors = translatedSectors[newValue] ?? [];
               } else {
                 subSectors = [];
               }

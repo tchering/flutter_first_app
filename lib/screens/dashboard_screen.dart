@@ -145,14 +145,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildProfessionalProfileCard() {
-    return Card(
+    return const Card(
       elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Professional Profile',
               style: TextStyle(
                 fontSize: 20,
@@ -160,8 +160,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 color: Colors.blue,
               ),
             ),
-            const SizedBox(height: 16),
-            const Text(
+            SizedBox(height: 16),
+            Text(
               'Professional bio and description goes here. This section can be expanded to include more details about the company or individual\'s professional background and expertise.',
               style: TextStyle(fontSize: 16),
             ),

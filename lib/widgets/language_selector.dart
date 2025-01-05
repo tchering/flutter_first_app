@@ -28,7 +28,7 @@ class LanguageSelector extends StatelessWidget {
     return PopupMenuButton<String>(
       icon: SvgPicture.asset(
         _getFlagPath(context.locale.languageCode),
-        width: 24,
+        width: context.locale.languageCode == 'en' ? 27 : 24,
         height: 18,
         color: isDark ? Colors.white : null,
       ),
@@ -79,7 +79,7 @@ class LanguageSelector extends StatelessWidget {
             borderRadius: BorderRadius.circular(2),
             child: SvgPicture.asset(
               flagPath,
-              width: 24,
+              width: languageCode == 'en' ? 27 : 24,
               height: 18,
             ),
           ),

@@ -48,24 +48,26 @@
           "ropeAccessTechnician": "Rope Access Technician",
           "roofer": "Roofer",
           "waterproofer": "Waterproofer",
-          "metalJoinery": "Metal Joinery"
+          "metalJoinery": "Metal Joinery",
+          "glazier": "Glazier",
+          "blindInstaller": "Blind Installer"
         }
       },
       "structureConstruction": {
-        "name": "Structure & Construction",
+        "name": "Structure & Shell Work",
         "subsectors": {
           "woodCarpenter": "Wood Carpenter",
-          "equipmentOperator": "Equipment Operator",
+          "machineOperator": "Machine Operator",
           "woodConstructor": "Wood Constructor",
           "concreteConstructor": "Reinforced Concrete Constructor",
           "flooringConstructor": "Industrial Flooring Constructor",
           "metalConstructor": "Metal Constructor",
-          "demolitionExpert": "Demolition Expert",
+          "demolitionWorker": "Demolition Worker",
           "craneOperator": "Crane Operator",
           "mason": "Mason",
           "scaffoldingAssembler": "Scaffolding Assembler",
-          "liftingEquipmentAssembler": "Lifting Equipment Assembler",
-          "stoneCutter": "Stone Cutter"
+          "liftingAssembler": "Lifting Assembler",
+          "stoneMason": "Stone Mason"
         }
       }
     },
