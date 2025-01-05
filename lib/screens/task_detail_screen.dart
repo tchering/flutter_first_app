@@ -82,6 +82,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
     try {
       await ApiService.applyForTask(widget.taskId);
       await _fetchTaskApplication();
+      await ApiService.fetchProjectStatistics();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Application sent successfully')),
@@ -103,20 +104,18 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
   }
 
   Future<void> _withdrawApplication() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
-      setState(() {
-        _isLoading = true; // Show loading state
-      });
-      
       await ApiService.withdrawTaskApplication(taskId: widget.taskId);
-      
-      // Refresh both task details and application status
-      await _loadTaskDetails();
-      await _fetchTaskApplication();
+      await _fetchTaskApplication(); // Refresh application status
+      await ApiService.fetchProjectStatistics(); // Refresh dashboard statistics
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Application withdrawn successfully')),
+          SnackBar(content: Text('Application withdrawn successfully')),
         );
       }
     } catch (e) {

@@ -98,25 +98,22 @@ class _TaskListScreenState extends State<TaskListScreen> {
   }
 
   Widget _buildTaskCard(Map<String, dynamic> task) {
+    final bool hasApplication = task['my_application'] == true;
+    final String? applicationStatus = task['application_status'];
+
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
         onTap: () {
-          // Navigate to task detail screen
           Navigator.push(
-            context, 
+            context,
             MaterialPageRoute(
               builder: (context) => TaskDetailScreen(
-                taskId: task['id'], 
-                isContractor: widget.isContractor
-              )
-            )
-          );
+                taskId: task['id'],
+                isContractor: widget.isContractor,
+              ),
+            ),
+          ).then((_) => _fetchTasks()); // Refresh after returning
         },
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -128,26 +125,34 @@ class _TaskListScreenState extends State<TaskListScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      task['site_name'] ?? 'Unnamed Task',
+                      task['site_name'] ?? 'Unnamed Site',
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  Chip(
-                    label: Text(
-                      task['status'] ?? widget.status, 
-                      style: const TextStyle(color: Colors.white),
+                  if (!widget.isContractor && hasApplication)
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: _getStatusColor(applicationStatus),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        applicationStatus?.toUpperCase() ?? 'UNKNOWN',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                    backgroundColor: _getStatusColor(task['status'] ?? widget.status),
-                  ),
                 ],
               ),
               const SizedBox(height: 8),
               Text(
-                task['street'] ?? 'No address',
+                '${task['street']}, ${task['city']}',
                 style: TextStyle(
                   color: Colors.grey[600],
                 ),
@@ -156,34 +161,19 @@ class _TaskListScreenState extends State<TaskListScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Icon(
-                        FontAwesomeIcons.calendar, 
-                        size: 16, 
-                        color: Colors.grey[600]
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        _formatDate(task['created_at']),
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ],
+                  Text(
+                    'Status: ${task['status']?.toString().toUpperCase() ?? 'Unknown'}',
+                    style: TextStyle(
+                      color: _getStatusColor(task['status']),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  if (task['applications_count'] != null)
-                    Row(
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.paperclip, 
-                          size: 16, 
-                          color: Colors.grey[600]
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '${task['applications_count']} Applications',
-                          style: TextStyle(color: Colors.grey[600]),
-                        ),
-                      ],
+                  if (task['proposed_price'] != null)
+                    Text(
+                      '€${task['proposed_price']}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                 ],
               ),
@@ -192,6 +182,23 @@ class _TaskListScreenState extends State<TaskListScreen> {
         ),
       ),
     );
+  }
+
+  Color _getStatusColor(String? status) {
+    switch (status?.toLowerCase()) {
+      case 'pending':
+        return Colors.orange;
+      case 'approved':
+        return Colors.green;
+      case 'rejected':
+        return Colors.red;
+      case 'active':
+        return Colors.blue;
+      case 'completed':
+        return Colors.purple;
+      default:
+        return Colors.grey;
+    }
   }
 
   String _formatDate(String? dateString) {
@@ -220,23 +227,6 @@ class _TaskListScreenState extends State<TaskListScreen> {
         return 'All';
       default:
         return status.capitalize();
-    }
-  }
-
-  Color _getStatusColor(String status) {
-    switch (status) {
-      case 'pending':
-        return Colors.orange;
-      case 'active':
-        return Colors.green;
-      case 'in progress':
-        return Colors.teal;
-      case 'completed':
-        return Colors.purple;
-      case 'approved':
-        return Colors.indigo;
-      default:
-        return Colors.grey;
     }
   }
 }

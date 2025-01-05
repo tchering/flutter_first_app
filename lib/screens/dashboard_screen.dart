@@ -328,29 +328,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.checkCircle,
               value: '${_projectStatistics['approved_applications'] ?? 0}',
-              label: tr('applications_approved'),
+              label: 'applications_approved',
               color: Colors.green,
               hasNotification: false,
             ),
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.clock,
               value: '${_projectStatistics['pending_applications'] ?? 0}',
-              label: tr('applications_pending'),
+              label: 'applications_pending',
               color: Colors.orange,
               hasNotification: false,
             ),
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.times,
               value: '${_projectStatistics['rejected_applications'] ?? 0}',
-              label: tr('applications_rejected'),
+              label: 'applications_rejected',
               color: Colors.red,
               hasNotification: false,
             ),
             _buildAnalyticsCard(
-              icon: FontAwesomeIcons.hammer,
+              icon: FontAwesomeIcons.spinner,
               value: '${_projectStatistics['in_progress_projects'] ?? 0}',
-              label: tr('in_progress'),
+              label: 'in_progress',
               color: Colors.blue,
+              hasNotification: false,
+            ),
+            _buildAnalyticsCard(
+              icon: FontAwesomeIcons.checkDouble,
+              value: '${_projectStatistics['completed_projects'] ?? 0}',
+              label: 'completed',
+              color: Colors.purple,
               hasNotification: false,
             ),
           ],
@@ -375,26 +382,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       child: InkWell(
         onTap: () {
-          // Determine the status based on the label
+          // Map labels to API status values
           String status;
-          switch (label) {
-            case 'Total Projects':
-              status = 'all';
+          switch (label.toLowerCase()) {
+            case 'applications_approved':
+              status = 'approved';
               break;
-            case 'Pending':
+            case 'applications_pending':
               status = 'pending';
               break;
-            case 'Active':
-              status = 'active';
+            case 'applications_rejected':
+              status = 'rejected';
               break;
-            case 'In Progress':
-              status = 'in progress';
+            case 'in_progress':
+              status = 'in_progress';
               break;
-            case 'Completed':
+            case 'completed':
               status = 'completed';
-              break;
-            case 'Travaux Approved':
-              status = 'approved';
               break;
             default:
               status = label.toLowerCase();
