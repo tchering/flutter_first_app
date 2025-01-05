@@ -397,4 +397,76 @@ class ApiService {
       throw Exception('Error deleting task application: $e');
     }
   }
+
+  static Future<Map<String, dynamic>> applyForTaskWithDetails({
+    required int taskId,
+    required double proposedPrice,
+    required int experience,
+    required String coverLetter,
+    required String completionTimeframe,
+    required String insuranceStatus,
+    required String skills,
+    required String equipmentOwned,
+    required String paymentTerms,
+    required String references,
+    required bool isNegotiable,
+  }) async {
+    final token = await AuthService.getToken();
+    if (token == null) {
+      throw Exception('No authentication token found');
+    }
+
+    final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/tasks/$taskId/task_applications'), // Keep plural for creating
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': formattedToken,
+        'Accept': 'application/json',
+      },
+      body: jsonEncode({
+        'task_application': {
+          'proposed_price': proposedPrice,
+          'experience': experience,
+          'cover_letter': coverLetter,
+          'completion_timeframe': completionTimeframe,
+          'insurance_status': insuranceStatus,
+          'skills': skills,
+          'equipement_owned': equipmentOwned,
+          'payment_terms': paymentTerms,
+          'references': references,
+          'negotiable': isNegotiable,
+        },
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to apply for task: ${response.statusCode}');
+    }
+  }
+
+  static Future<void> withdrawTaskApplication({required int taskId}) async {
+    final token = await AuthService.getToken();
+    if (token == null) {
+      throw Exception('No authentication token found');
+    }
+
+    final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+
+    final response = await http.delete(
+      Uri.parse('$baseUrl/tasks/$taskId/task_application'), // Use singular for withdrawal
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': formattedToken,
+        'Accept': 'application/json',
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to withdraw task application: ${response.statusCode}');
+    }
+  }
 }

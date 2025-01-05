@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../services/api_service.dart';
+import './task_application_screen.dart';
 
 extension StringExtension on String {
   String toTitleCase() {
@@ -19,7 +19,7 @@ class TaskDetailScreen extends StatefulWidget {
   final int taskId;
   final bool isContractor;
 
-  const TaskDetailScreen({
+  TaskDetailScreen({
     super.key, 
     required this.taskId,
     this.isContractor = true,
@@ -39,13 +39,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchTaskDetails();
+    _loadTaskDetails();
     if (!widget.isContractor) {
       _fetchTaskApplication();
     }
   }
 
-  Future<void> _fetchTaskDetails() async {
+  Future<void> _loadTaskDetails() async {
     try {
       final taskDetails = await ApiService.fetchTaskDetails(
         taskId: widget.taskId
@@ -84,13 +84,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
       await _fetchTaskApplication();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('application_sent'.tr())),
+          SnackBar(content: Text('Application sent successfully')),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('error_applying'.tr())),
+          SnackBar(content: Text('Error applying for task: $e')),
         );
       }
     } finally {
@@ -104,20 +104,32 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
 
   Future<void> _withdrawApplication() async {
     try {
-      await ApiService.deleteTaskApplication(widget.taskId);
       setState(() {
-        _application = {};
+        _isLoading = true; // Show loading state
       });
+      
+      await ApiService.withdrawTaskApplication(taskId: widget.taskId);
+      
+      // Refresh both task details and application status
+      await _loadTaskDetails();
+      await _fetchTaskApplication();
+      
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('application_withdrawn'.tr())),
+          const SnackBar(content: Text('Application withdrawn successfully')),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('error_withdrawing'.tr())),
+          SnackBar(content: Text('Error withdrawing application: $e')),
         );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
   }
@@ -129,24 +141,24 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
         children: [
           if (_taskDetails['contract'] == null && _taskDetails['sub_contractor_id'] != null)
             ElevatedButton.icon(
-              icon: const Icon(Icons.description),
-              label: Text('generate_contract'.tr()),
+              icon: Icon(Icons.description),
+              label: Text('Generate Contract'),
               onPressed: () {
                 // Navigate to contract generation
               },
             ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8),
           ElevatedButton.icon(
-            icon: const Icon(Icons.edit),
-            label: Text('edit'.tr()),
+            icon: Icon(Icons.edit),
+            label: Text('Edit'),
             onPressed: () {
               // Navigate to edit screen
             },
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8),
           ElevatedButton.icon(
-            icon: const Icon(Icons.delete),
-            label: Text('delete'.tr()),
+            icon: Icon(Icons.delete),
+            label: Text('Delete'),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
             ),
@@ -164,18 +176,18 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
         if (applicationStatus == 'approved') {
           if (_taskDetails['contract'] != null) {
             return ElevatedButton.icon(
-              icon: const Icon(Icons.description),
-              label: Text('view_contract'.tr()),
+              icon: Icon(Icons.description),
+              label: Text('View Contract'),
               onPressed: () {
                 // Navigate to contract view
               },
             );
           }
-          return const SizedBox.shrink();
+          return SizedBox.shrink();
         }
         return ElevatedButton.icon(
-          icon: const Icon(Icons.cancel),
-          label: Text('withdraw_application'.tr()),
+          icon: Icon(Icons.cancel),
+          label: Text('Withdraw Application'),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
           ),
@@ -183,10 +195,39 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
         );
       }
       
-      return ElevatedButton.icon(
-        icon: const Icon(Icons.send),
-        label: Text('apply_for_task'.tr()),
-        onPressed: _isApplying ? null : _applyForTask,
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ElevatedButton(
+            onPressed: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TaskApplicationScreen(taskId: widget.taskId),
+                ),
+              );
+              if (result == true) {
+                // Application was submitted successfully
+                setState(() {
+                  _isLoading = true; // Show loading while refreshing
+                });
+                // Refresh both task details and application status
+                await _loadTaskDetails();
+                await _fetchTaskApplication();
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              backgroundColor: Theme.of(context).primaryColor,
+            ),
+            child: Text(
+              'Apply for Task',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
       );
     }
   }
@@ -203,23 +244,23 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: Color(0xFFF5F7FA),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: Text(
           'Task Details', 
           style: TextStyle(
-            color: Colors.blueGrey[800],
+            color: Colors.blueGrey.shade800,
             fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
         actions: _buildAppBarActions(),
-        iconTheme: IconThemeData(color: Colors.blueGrey[800]),
+        iconTheme: IconThemeData(color: Colors.blueGrey.shade800),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(child: CircularProgressIndicator())
           : _errorMessage != null
               ? Center(child: Text(_errorMessage!))
               : SingleChildScrollView(
@@ -227,9 +268,9 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       _buildTaskDetailBody(),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: EdgeInsets.all(16.0),
                         child: _buildActionButtons(),
                       ),
                     ],
@@ -243,13 +284,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
 
     return [
       IconButton(
-        icon: Icon(Icons.edit, color: Colors.blueGrey[700]),
+        icon: Icon(Icons.edit, color: Colors.blueGrey.shade700),
         onPressed: () {
           // TODO: Implement edit task navigation
         },
       ),
       IconButton(
-        icon: Icon(Icons.delete, color: Colors.red[700]),
+        icon: Icon(Icons.delete, color: Colors.red.shade700),
         onPressed: _showDeleteConfirmationDialog,
       ),
     ];
@@ -260,18 +301,18 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Delete Task'),
-          content: const Text('Are you sure you want to delete this task?'),
+          title: Text('Delete Task'),
+          content: Text('Are you sure you want to delete this task?'),
           actions: [
             TextButton(
-              child: const Text('Cancel'),
+              child: Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: const Text('Delete'),
+              child: Text('Delete'),
               onPressed: () {
                 // TODO: Implement task deletion
                 Navigator.of(context).pop();
@@ -288,13 +329,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Card(
-      margin: const EdgeInsets.all(16),
+      margin: EdgeInsets.all(16),
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,10 +347,9 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                     radius: 30,
                     backgroundImage: _taskDetails['contractor_logo'] != null
                         ? NetworkImage(_taskDetails['contractor_logo'])
-                        : const AssetImage('assets/images/default_logo1.png')
-                            as ImageProvider,
+                        : AssetImage('assets/images/default_logo1.png') as ImageProvider,
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -330,14 +370,14 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               // Location
               _buildInfoRow(
                 Icons.location_on,
                 '${_taskDetails['street']}, ${_taskDetails['city']}',
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
 
               // Dates
               _buildInfoRow(
@@ -345,13 +385,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                 'Start: ${DateFormat('MMM d, yyyy').format(DateTime.parse(_taskDetails['start_date']))}',
               ),
               if (_taskDetails['end_date'] != null) ...[
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 _buildInfoRow(
                   Icons.event,
                   'End: ${DateFormat('MMM d, yyyy').format(DateTime.parse(_taskDetails['end_date']))}',
                 ),
               ],
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
 
               // Price
               if (_taskDetails['proposed_price'] != null)
@@ -360,7 +400,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                   'Proposed Price: ${_formatPrice(_taskDetails['proposed_price'])}',
                 ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               // Task Details Section
               Text(
@@ -369,7 +409,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
 
               // Text Attributes
               if (_taskDetails['text_attributes'] != null) ...[
@@ -386,12 +426,12 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                           color: Colors.grey[600],
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4),
                       Text(
                         entry.value.toString(),
                         style: textTheme.bodyLarge,
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                     ],
                   );
                 }).toList(),
@@ -406,13 +446,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 ..._taskDetails['measurements'].entries.map((entry) {
                   final label = entry.key.toString().replaceAll('_', ' ').split(' ')
                     .map((word) => word.isEmpty ? '' : '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}')
                     .join(' ');
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
+                    padding: EdgeInsets.only(bottom: 8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -430,7 +470,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                     ),
                   );
                 }).toList(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
               ],
 
               // Services
@@ -442,7 +482,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -479,7 +519,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
           icon,
           color: Colors.grey[600],
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: 8),
         Expanded(
           child: Text(
             text,
