@@ -126,7 +126,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ? _buildContractorStats() 
                   : _buildSubcontractorStats(),
                 const SizedBox(height: 16),
-                if (widget.isContractor) _buildQuickActions(),
+                _buildQuickActions(),
               ],
             ),
           ),
@@ -514,42 +514,75 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Quick Actions',
-              style: TextStyle(
+            Text(
+              widget.isContractor ? tr('quick_actions') : tr('available_actions'),
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildActionButton(
-                    icon: Icons.add,
-                    label: tr('new_project'),
-                    color: Colors.blue,
-                    onTap: () {},
+            if (widget.isContractor)
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildActionButton(
+                      icon: Icons.add,
+                      label: tr('new_project'),
+                      color: Colors.blue,
+                      onTap: () {},
+                    ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildActionButton(
-                    icon: Icons.search,
-                    label: tr('find_jobs'),
-                    color: Colors.green,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const JobSearchScreen(),
-                        ),
-                      );
-                    },
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _buildActionButton(
+                      icon: Icons.search,
+                      label: tr('find_contractors'),
+                      color: Colors.green,
+                      onTap: () {},
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              )
+            else
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildActionButton(
+                      icon: Icons.search,
+                      label: tr('find_jobs'),
+                      color: Colors.green,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const JobSearchScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _buildActionButton(
+                      icon: Icons.work_history,
+                      label: tr('my_applications'),
+                      color: Colors.blue,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TaskListScreen(
+                              status: 'all',
+                              isContractor: false,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
           ],
         ),
       ),

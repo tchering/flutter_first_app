@@ -7,6 +7,7 @@ class AuthService {
 
   // Save user data and token
   static Future<void> saveUserData(Map<String, dynamic> userData, String token) async {
+    print('Saving token: $token');
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_userKey, jsonEncode(userData));
     await prefs.setString(_tokenKey, token);
@@ -26,7 +27,10 @@ class AuthService {
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(_tokenKey);
-    return token != null ? 'Bearer $token' : null;
+    print('Retrieved raw token: $token');
+    final formattedToken = token != null ? 'Bearer $token' : null;
+    print('Formatted token: $formattedToken');
+    return formattedToken;
   }
 
   // Check if user is logged in

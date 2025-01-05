@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../models/task.dart';
 import '../services/api_service.dart';
+import 'task_detail_screen.dart'; // Import TaskDetailScreen
 
 class JobSearchScreen extends StatefulWidget {
   const JobSearchScreen({super.key});
@@ -110,7 +111,15 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
           margin: const EdgeInsets.only(bottom: 16),
           child: InkWell(
             onTap: () {
-              // Navigate to task details
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TaskDetailScreen(
+                    taskId: task.id,
+                    isContractor: false,
+                  ),
+                ),
+              );
             },
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -166,6 +175,17 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
                         DateFormat('MMM d, yyyy').format(task.startDate),
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
+                      if (task.proposedPrice != null) ...[
+                        const Spacer(),
+                        const Icon(Icons.attach_money, size: 20),
+                        const SizedBox(width: 4),
+                        Text(
+                          task.proposedPrice!.toStringAsFixed(2),
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                      ],
                     ],
                   ),
                 ],

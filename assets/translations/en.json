@@ -177,5 +177,25 @@
     "available_jobs": "Available Jobs",
     "search_jobs_hint": "Search by location or job title",
     "no_jobs_found": "No jobs found"
+  },
+  "task_applications": {
+    "apply_for_task": "Apply for Task",
+    "withdraw_application": "Withdraw Application",
+    "application_sent": "Application sent successfully",
+    "application_withdrawn": "Application withdrawn successfully",
+    "error_applying": "Error applying for task",
+    "error_withdrawing": "Error withdrawing application",
+    "generate_contract": "Generate Contract",
+    "view_contract": "View Contract",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "dashboard": {
+    "quick_actions": "Quick Actions",
+    "available_actions": "Available Actions",
+    "new_project": "New Project",
+    "find_contractors": "Find Contractors",
+    "find_jobs": "Find Jobs",
+    "my_applications": "My Applications"
   }
 }

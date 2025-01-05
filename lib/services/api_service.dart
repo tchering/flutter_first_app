@@ -19,14 +19,16 @@ class ApiService {
         }),
       );
 
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      print('Login Response status: ${response.statusCode}');
+      print('Login Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        print('Login data: $data');
         if (data['token'] == null) {
           throw Exception('Authentication failed: No token received');
         }
+        print('About to save token: ${data['token']}');
         await AuthService.saveUserData(data['user'], data['token']);
         return data;
       } else {
@@ -306,6 +308,93 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Error fetching tasks: $e');
+    }
+  }
+
+  static Future<bool> applyForTask(int taskId) async {
+    try {
+      final token = await AuthService.getToken();
+      if (token == null) {
+        throw Exception('No authentication token found');
+      }
+
+      final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+      final uri = Uri.parse('$baseUrl/tasks/$taskId/task_applications');
+
+      final response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': formattedToken,
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        throw Exception('Failed to apply for task: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error applying for task: $e');
+    }
+  }
+
+  static Future<Map<String, dynamic>> getTaskApplication(int taskId) async {
+    try {
+      final token = await AuthService.getToken();
+      if (token == null) {
+        throw Exception('No authentication token found');
+      }
+
+      final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+      final uri = Uri.parse('$baseUrl/tasks/$taskId/task_applications');
+
+      final response = await http.get(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': formattedToken,
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        throw Exception('Failed to get task application: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error getting task application: $e');
+    }
+  }
+
+  static Future<bool> deleteTaskApplication(int taskId) async {
+    try {
+      final token = await AuthService.getToken();
+      if (token == null) {
+        throw Exception('No authentication token found');
+      }
+
+      final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+      final uri = Uri.parse('$baseUrl/tasks/$taskId/task_applications');
+
+      final response = await http.delete(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': formattedToken,
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Failed to delete task application: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error deleting task application: $e');
     }
   }
 }
