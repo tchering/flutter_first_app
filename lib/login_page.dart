@@ -318,31 +318,36 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                             const SizedBox(height: 24),
 
                             // Sign up link
-                            Wrap(
-                              alignment: WrapAlignment.center,
-                              children: [
-                                Text(
-                                  'login.signupPrompt'.tr(),
-                                  style: TextStyle(color: Colors.grey[600]),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const SignupScreen(),
+                            Container(
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              child: Wrap(
+                                alignment: WrapAlignment.center,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  Text(
+                                    'login.signupPrompt'.tr(),
+                                    style: TextStyle(color: Colors.grey[600]),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const SignupScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      'login.signupButton'.tr(),
+                                      style: TextStyle(
+                                        color: theme.primaryColor,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                    );
-                                  },
-                                  child: Text(
-                                    'login.signupButton'.tr(),
-                                    style: TextStyle(
-                                      color: theme.primaryColor,
-                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ],
                         ),

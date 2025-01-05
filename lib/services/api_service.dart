@@ -7,21 +7,42 @@ class ApiService {
   static const String tokenKey = 'auth_token';
 
   static Future<Map<String, dynamic>> login(String email, String password) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/login'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'email': email,
-        'password': password,
-      }),
-    );
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/login'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'email': email,
+          'password': password,
+        }),
+      );
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      await _saveToken(data['token']);
-      return data;
-    } else {
-      throw Exception(jsonDecode(response.body)['error']);
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['token'] == null) {
+          throw Exception('Authentication failed: No token received');
+        }
+        await _saveToken(data['token']);
+        return data;
+      } else {
+        Map<String, dynamic> errorData;
+        try {
+          errorData = jsonDecode(response.body);
+        } catch (e) {
+          // If response is not JSON, use a generic error
+          throw Exception('An error occurred during login. Please try again.');
+        }
+        throw Exception(errorData['error'] ?? 'An error occurred during login');
+      }
+    } catch (e) {
+      if (e is FormatException) {
+        print('Format Exception: ${e.message}');
+        throw Exception('Invalid server response format');
+      }
+      rethrow;
     }
   }
 
