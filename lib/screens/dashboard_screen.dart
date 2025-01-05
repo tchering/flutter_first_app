@@ -20,11 +20,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Map<String, dynamic> _userProfile = {};
   bool _isLoading = true;
   String? _errorMessage;
+  Map<String, dynamic> _projectStatistics = {};
 
   @override
   void initState() {
     super.initState();
     _fetchUserProfile();
+    _fetchProjectStatistics();
   }
 
   Future<void> _fetchUserProfile() async {
@@ -39,6 +41,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
         _errorMessage = e.toString();
         _isLoading = false;
       });
+    }
+  }
+
+  Future<void> _fetchProjectStatistics() async {
+    try {
+      final projectStatistics = await ApiService.fetchProjectStatistics();
+      setState(() {
+        _projectStatistics = projectStatistics;
+      });
+    } catch (e) {
+      print('Error fetching project statistics: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load project statistics: $e')),
+      );
     }
   }
 
@@ -104,7 +120,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (widget.isContractor) _buildContractorStats(),
+                widget.isContractor 
+                  ? _buildContractorStats() 
+                  : _buildSubcontractorStats(),
                 const SizedBox(height: 16),
                 if (widget.isContractor) _buildQuickActions(),
               ],
@@ -231,32 +249,89 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.briefcase,
-              value: '15',
+              value: '${_projectStatistics['total_projects'] ?? 0}',
               label: tr('total_projects'),
               color: Colors.blue,
               hasNotification: false,
             ),
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.clock,
-              value: '3',
+              value: '${_projectStatistics['pending_projects'] ?? 0}',
               label: tr('pending'),
               color: Colors.orange,
               hasNotification: false,
             ),
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.hammer,
-              value: '5',
+              value: '${_projectStatistics['active_projects'] ?? 0}',
               label: tr('active'),
               color: Colors.green,
-              hasNotification: true,
-              notificationCount: '2',
+              hasNotification: _projectStatistics['active_tasks_applications_count'] != null && 
+                               _projectStatistics['active_tasks_applications_count'] > 0,
+              notificationCount: '${_projectStatistics['active_tasks_applications_count'] ?? 0}',
               notificationLabel: tr('applications'),
             ),
             _buildAnalyticsCard(
               icon: FontAwesomeIcons.checkDouble,
-              value: '7',
+              value: '${_projectStatistics['completed_projects'] ?? 0}',
               label: tr('completed'),
               color: Colors.purple,
+              hasNotification: false,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSubcontractorStats() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(left: 8.0, bottom: 16.0),
+          child: Text(
+            'Project Applications',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        GridView.count(
+          crossAxisCount: 2,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          mainAxisSpacing: 16.0,
+          crossAxisSpacing: 16.0,
+          childAspectRatio: 1.7,
+          children: [
+            _buildAnalyticsCard(
+              icon: FontAwesomeIcons.checkCircle,
+              value: '${_projectStatistics['approved_applications'] ?? 0}',
+              label: tr('applications_approved'),
+              color: Colors.green,
+              hasNotification: false,
+            ),
+            _buildAnalyticsCard(
+              icon: FontAwesomeIcons.clock,
+              value: '${_projectStatistics['pending_applications'] ?? 0}',
+              label: tr('applications_pending'),
+              color: Colors.orange,
+              hasNotification: false,
+            ),
+            _buildAnalyticsCard(
+              icon: FontAwesomeIcons.times,
+              value: '${_projectStatistics['rejected_applications'] ?? 0}',
+              label: tr('applications_rejected'),
+              color: Colors.red,
+              hasNotification: false,
+            ),
+            _buildAnalyticsCard(
+              icon: FontAwesomeIcons.hammer,
+              value: '${_projectStatistics['in_progress_projects'] ?? 0}',
+              label: tr('in_progress'),
+              color: Colors.blue,
               hasNotification: false,
             ),
           ],

@@ -148,4 +148,45 @@ class ApiService {
       rethrow;
     }
   }
+
+  static Future<Map<String, dynamic>> fetchProjectStatistics() async {
+    try {
+      final token = await AuthService.getToken();
+      if (token == null) {
+        throw Exception('No authentication token found');
+      }
+
+      final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+
+      print('Attempting to fetch project statistics with token: $formattedToken');
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/project_statistics'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': formattedToken,
+          'Accept': 'application/json',
+        },
+      );
+
+      print('Project Statistics Response status: ${response.statusCode}');
+      print('Project Statistics Response headers: ${response.headers}');
+      print('Project Statistics Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        Map<String, dynamic> errorData;
+        try {
+          errorData = jsonDecode(response.body);
+        } catch (e) {
+          throw Exception('Failed to parse error response: ${response.body}');
+        }
+        throw Exception(errorData['error'] ?? 'Failed to fetch project statistics');
+      }
+    } catch (e) {
+      print('Error in fetchProjectStatistics: $e');
+      rethrow;
+    }
+  }
 }
