@@ -8,8 +8,10 @@
     "team": "Team",
     "login": "Login",
     "signup": "Sign Up",
+    "dashboard": "Dashboard",
     "profile": "Profile",
-    "settings": "Settings"
+    "settings": "Settings",
+    "logout": "Logout"
   },
   "login": {
     "title": "Welcome Back",
@@ -30,6 +32,9 @@
       "invalidCredentials": "Invalid email or password"
     },
     "success": "Successfully logged in"
+  },
+  "logout": {
+    "success": "Successfully logged out"
   },
   "signup": {
     "step1": "Step 1 - Company Information",

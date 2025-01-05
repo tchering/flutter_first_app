@@ -8,8 +8,10 @@
     "team": "Équipe",
     "login": "Connexion",
     "signup": "S'inscrire",
+    "dashboard": "Tableau de bord",
     "profile": "Profil",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "logout": "Déconnexion"
   },
   "login": {
     "title": "Bon retour",
@@ -30,6 +32,9 @@
       "invalidCredentials": "Email ou mot de passe invalide"
     },
     "success": "Connexion réussie"
+  },
+  "logout": {
+    "success": "Déconnexion réussie"
   },
   "signup": {
     "step1": "Étape 1 - Informations sur l'entreprise",
