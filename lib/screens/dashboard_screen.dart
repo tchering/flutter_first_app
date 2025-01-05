@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../services/api_service.dart';
 import '../screens/task_list_screen.dart';
+import '../screens/job_search_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   final bool isContractor;
@@ -535,9 +536,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Expanded(
                   child: _buildActionButton(
                     icon: Icons.search,
-                    label: tr('find_contractors'),
+                    label: tr('find_jobs'),
                     color: Colors.green,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const JobSearchScreen(),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],

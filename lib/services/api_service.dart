@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_service.dart';
+import '../models/task.dart';
 
 class ApiService {
   static const String baseUrl = 'http://localhost:3000/api';
@@ -272,6 +273,39 @@ class ApiService {
     } catch (e) {
       print('Error in fetchTaskDetails: $e');
       rethrow;
+    }
+  }
+
+  static Future<List<Task>> fetchAvailableTasks({String? query}) async {
+    try {
+      final token = await AuthService.getToken();
+      if (token == null) {
+        throw Exception('No authentication token found');
+      }
+
+      final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+
+      final uri = Uri.parse('$baseUrl/tasks/available')
+          .replace(queryParameters: query != null ? {'query': query} : null);
+
+      final response = await http.get(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': formattedToken,
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        final List<dynamic> tasksJson = data['tasks'] ?? [];
+        return tasksJson.map((json) => Task.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to fetch tasks: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching tasks: $e');
     }
   }
 }

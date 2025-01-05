@@ -171,5 +171,11 @@
   "welcome": {
     "title": "Welcome to Minidost",
     "description": "Join thousands of construction professionals who trust Minidost"
+  },
+  "job_search": {
+    "find_jobs": "Find Jobs",
+    "available_jobs": "Available Jobs",
+    "search_jobs_hint": "Search by location or job title",
+    "no_jobs_found": "No jobs found"
   }
 }
