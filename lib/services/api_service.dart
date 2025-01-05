@@ -101,7 +101,7 @@ class ApiService {
 
   static List<String> getEstablishmentYears() {
     final int currentYear = DateTime.now().year;
-    final int startYear = 1900;
+    const int startYear = 1900;
     return List.generate(
       currentYear - startYear + 1,
       (index) => (currentYear - index).toString(),

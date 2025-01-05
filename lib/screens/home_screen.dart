@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'signup_screen.dart';
-import 'profile_screen.dart';
-import 'settings_screen.dart';
-import 'dashboard_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
