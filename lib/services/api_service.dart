@@ -193,87 +193,188 @@ class ApiService {
     }
   }
 
-  static Future<List<Map<String, dynamic>>> fetchTasksByStatus({
-    required String status, 
-    bool isContractor = true
+  static Future<List<dynamic>> getTasks({
+    required String status,
+    required bool isContractor,
   }) async {
-    try {
-      final token = await AuthService.getToken();
-      if (token == null) {
-        throw Exception('No authentication token found');
-      }
+    final token = await AuthService.getToken();
+    if (token == null) {
+      throw Exception('No authentication token found');
+    }
 
-      final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+    final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
 
-      print('Attempting to fetch tasks with status: $status');
+    final response = await http.get(
+      Uri.parse('$baseUrl/tasks?status=$status&is_contractor=$isContractor'),
+      headers: {
+        'Authorization': formattedToken,
+        'Content-Type': 'application/json',
+      },
+    );
 
-      final response = await http.get(
-        Uri.parse('$baseUrl/tasks?status=$status&is_contractor=${isContractor.toString()}'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': formattedToken,
-          'Accept': 'application/json',
-        },
-      );
-
-      print('Tasks Response status: ${response.statusCode}');
-      print('Tasks Response body: ${response.body}');
-
-      if (response.statusCode == 200) {
-        return List<Map<String, dynamic>>.from(jsonDecode(response.body));
-      } else {
-        Map<String, dynamic> errorData;
-        try {
-          errorData = jsonDecode(response.body);
-        } catch (e) {
-          throw Exception('Failed to parse error response: ${response.body}');
-        }
-        throw Exception(errorData['error'] ?? 'Failed to fetch tasks');
-      }
-    } catch (e) {
-      print('Error in fetchTasksByStatus: $e');
-      rethrow;
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load tasks');
     }
   }
 
-  static Future<Map<String, dynamic>> fetchTaskDetails({
-    required int taskId
-  }) async {
+  static Future<Map<String, dynamic>> getTask(int taskId) async {
+    final token = await AuthService.getToken();
+    if (token == null) {
+      throw Exception('No authentication token found');
+    }
+
+    final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/tasks/$taskId'),
+      headers: {
+        'Authorization': formattedToken,
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load task');
+    }
+  }
+
+  static Future<void> updateTask(int taskId, Map<String, dynamic> data) async {
+    final token = await AuthService.getToken();
+    if (token == null) {
+      throw Exception('No authentication token found');
+    }
+
+    final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+
+    final response = await http.patch(
+      Uri.parse('$baseUrl/tasks/$taskId'),
+      headers: {
+        'Authorization': formattedToken,
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({'task': data}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update task');
+    }
+  }
+
+  static Future<List<dynamic>> getTaskApplications(int taskId) async {
+    final token = await AuthService.getToken();
+    if (token == null) {
+      throw Exception('No authentication token found');
+    }
+
+    final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+    final url = '$baseUrl/tasks/$taskId/applications';
+    print('Fetching applications from: $url');
+    print('Using token: $formattedToken');
+
     try {
-      final token = await AuthService.getToken();
-      if (token == null) {
-        throw Exception('No authentication token found');
-      }
-
-      final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
-
-      print('Attempting to fetch task details for task ID: $taskId');
-
       final response = await http.get(
-        Uri.parse('$baseUrl/tasks/$taskId'),
+        Uri.parse(url),
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': formattedToken,
+          'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
       );
 
-      print('Task Details Response status: ${response.statusCode}');
-      print('Task Details Response body: ${response.body}');
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
-        Map<String, dynamic> errorData;
-        try {
-          errorData = jsonDecode(response.body);
-        } catch (e) {
-          throw Exception('Failed to parse error response: ${response.body}');
-        }
-        throw Exception(errorData['error'] ?? 'Failed to fetch task details');
+        throw Exception('Failed to load task applications: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
-      print('Error in fetchTaskDetails: $e');
+      print('Error fetching applications: $e');
+      rethrow;
+    }
+  }
+
+  static Future<Map<String, dynamic>> getTaskApplication(int taskId, {int? applicationId}) async {
+    final token = await AuthService.getToken();
+    if (token == null) {
+      throw Exception('No authentication token found');
+    }
+
+    final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+    final url = applicationId != null 
+        ? '$baseUrl/tasks/$taskId/applications/$applicationId'
+        : '$baseUrl/tasks/$taskId/my_application';
+
+    print('Fetching application from: $url');
+    print('Using token: $formattedToken');
+
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Authorization': formattedToken,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else if (response.statusCode == 404) {
+        throw Exception('Application not found');
+      } else {
+        throw Exception('Failed to load task application: ${response.statusCode} - ${response.body}');
+      }
+    } catch (e) {
+      print('Error fetching application: $e');
+      rethrow;
+    }
+  }
+
+  static Future<void> updateTaskApplication(int taskId, int applicationId, String status) async {
+    final token = await AuthService.getToken();
+    if (token == null) {
+      throw Exception('No authentication token found');
+    }
+
+    final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+    final url = '$baseUrl/tasks/$taskId/applications/$applicationId';
+    
+    print('Updating application at: $url');
+    print('Using token: $formattedToken');
+    print('Status update: $status');
+
+    try {
+      final response = await http.patch(
+        Uri.parse(url),
+        headers: {
+          'Authorization': formattedToken,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({
+          'task_application': {
+            'application_status': status,
+          }
+        }),
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update task application: ${response.statusCode} - ${response.body}');
+      }
+    } catch (e) {
+      print('Error updating application: $e');
       rethrow;
     }
   }
@@ -319,7 +420,7 @@ class ApiService {
       }
 
       final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
-      final uri = Uri.parse('$baseUrl/tasks/$taskId/task_applications');
+      final uri = Uri.parse('$baseUrl/tasks/$taskId/applications');
 
       final response = await http.post(
         uri,
@@ -337,64 +438,6 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Error applying for task: $e');
-    }
-  }
-
-  static Future<Map<String, dynamic>> getTaskApplication(int taskId) async {
-    try {
-      final token = await AuthService.getToken();
-      if (token == null) {
-        throw Exception('No authentication token found');
-      }
-
-      final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
-      final uri = Uri.parse('$baseUrl/tasks/$taskId/task_applications');
-
-      final response = await http.get(
-        uri,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': formattedToken,
-          'Accept': 'application/json',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        return json.decode(response.body);
-      } else {
-        throw Exception('Failed to get task application: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Error getting task application: $e');
-    }
-  }
-
-  static Future<bool> deleteTaskApplication(int taskId) async {
-    try {
-      final token = await AuthService.getToken();
-      if (token == null) {
-        throw Exception('No authentication token found');
-      }
-
-      final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
-      final uri = Uri.parse('$baseUrl/tasks/$taskId/task_applications');
-
-      final response = await http.delete(
-        uri,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': formattedToken,
-          'Accept': 'application/json',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        throw Exception('Failed to delete task application: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Error deleting task application: $e');
     }
   }
 
@@ -419,7 +462,7 @@ class ApiService {
     final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
 
     final response = await http.post(
-      Uri.parse('$baseUrl/tasks/$taskId/task_applications'), // Keep plural for creating
+      Uri.parse('$baseUrl/tasks/$taskId/applications'), // Keep plural for creating
       headers: {
         'Content-Type': 'application/json',
         'Authorization': formattedToken,
