@@ -147,7 +147,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               radius: 50,
               backgroundImage: _userProfile['logo_url'] != null
                 ? NetworkImage(_userProfile['logo_url'])
-                : const AssetImage('assets/images/default_logo.png') as ImageProvider,
+                : const AssetImage('assets/images/logo_dost.png') as ImageProvider,
             ),
             const SizedBox(height: 16),
             Text(

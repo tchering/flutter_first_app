@@ -36,7 +36,7 @@ class User {
       return logo!;
     }
     // Fallback to default logo
-    return 'assets/images/default_logo1.png';
+    return 'assets/images/logo_dost.png';
   }
 
   String get displayStreet => street ?? '';

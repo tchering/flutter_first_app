@@ -130,7 +130,7 @@ class _JobSearchScreenState extends State<JobSearchScreen> {
                       CircleAvatar(
                         backgroundImage: task.contractorLogo != null
                             ? NetworkImage(task.contractorLogo!)
-                            : const AssetImage('assets/images/default_logo1.png')
+                            : const AssetImage('assets/images/logo_dost.png')
                                 as ImageProvider,
                         radius: 24,
                       ),

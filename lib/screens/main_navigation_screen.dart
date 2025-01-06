@@ -73,10 +73,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          tr('app.title'),
-          style: const TextStyle(fontWeight: FontWeight.bold),
+        title: Image.asset(
+          'assets/images/logo_dost.png',
+          height: 40,
+          fit: BoxFit.contain,
         ),
+        centerTitle: true,
         actions: [
           LanguageSelector(
             onLocaleChange: widget.onLocaleChange,

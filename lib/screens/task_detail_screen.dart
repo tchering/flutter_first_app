@@ -370,7 +370,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         ),
-        child: Text('Apply for this task'),
+        child: const Text('Apply for this task'),
       );
     }
 
@@ -429,7 +429,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                   backgroundColor: Colors.red,
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 ),
-                child: Text('Withdraw Application'),
+                child: const Text('Withdraw Application'),
               ),
             ],
           ],
