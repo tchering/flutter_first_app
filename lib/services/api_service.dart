@@ -215,20 +215,24 @@ class ApiService {
       throw Exception('No authentication token found');
     }
 
-    final formattedToken = token.startsWith('Bearer ') ? token : 'Bearer $token';
+    final position = isContractor ? 'contractor' : 'subcontractor';
+    print('Fetching tasks with URI: $baseUrl/tasks?status=$status&position=$position');
 
     final response = await http.get(
-      Uri.parse('$baseUrl/tasks?status=$status&is_contractor=$isContractor'),
+      Uri.parse('$baseUrl/tasks?status=$status&position=$position'),
       headers: {
-        'Authorization': formattedToken,
+        'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       },
     );
 
+    print('Tasks Response status: ${response.statusCode}');
+    print('Tasks Response body: ${response.body}');
+
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw Exception('Failed to load tasks');
+      throw Exception('Failed to load tasks: ${response.statusCode}');
     }
   }
 
