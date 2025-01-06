@@ -94,15 +94,15 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       body: IndexedStack(
         index: _currentIndex,
         children: [
-          HomeScreen(),
+          const HomeScreen(),
           if (isLoggedIn) DashboardScreen(isContractor: isContractor, fromNavBar: true),
           if (isLoggedIn) const MapScreen(),
-          AboutScreen(),
-          TeamScreen(),
-          if (!isLoggedIn) LoginPage(),
-          if (!isLoggedIn) SignupScreen(),
-          if (isLoggedIn) ProfileScreen(),
-          if (isLoggedIn) SettingsScreen(),
+          const AboutScreen(),
+          const TeamScreen(),
+          if (!isLoggedIn) const LoginPage(),
+          if (!isLoggedIn) const SignupScreen(),
+          if (isLoggedIn) const ProfileScreen(),
+          if (isLoggedIn) const SettingsScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

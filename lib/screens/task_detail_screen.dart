@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import '../services/api_service.dart';
-import './task_application_screen.dart';
 
 extension StringExtension on String {
   String toTitleCase() {

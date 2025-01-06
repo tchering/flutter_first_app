@@ -525,4 +525,60 @@ class ApiService {
       throw Exception('Failed to withdraw task application: ${response.statusCode}');
     }
   }
+
+  static Future<List<Task>> fetchTasksByStatus(String status) async {
+    try {
+      final token = await AuthService.getToken();
+      final userData = await AuthService.getUserData();
+      final isContractor = ApiService.isContractor(userData);
+      
+      // Build the URL with proper query parameters
+      final queryParams = {
+        'status': status,
+        'position': isContractor ? 'contractor' : 'sub-contractor',
+      };
+      
+      final uri = Uri.parse('$baseUrl/tasks').replace(queryParameters: queryParams);
+      print('Fetching tasks with URI: $uri');
+      
+      final response = await http.get(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      print('Tasks Response status: ${response.statusCode}');
+      print('Tasks Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        final tasks = data.map((json) => Task.fromJson(json)).toList();
+        print('Parsed ${tasks.length} tasks');
+        return tasks;
+      } else {
+        throw Exception('Failed to load tasks: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching tasks: $e');
+      throw Exception('Error fetching tasks: $e');
+    }
+  }
+
+  static Future<Map<String, dynamic>> fetchDepartmentsGeoJson() async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements.geojson'),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Failed to load departments GeoJSON');
+      }
+    } catch (e) {
+      throw Exception('Error fetching departments GeoJSON: $e');
+    }
+  }
 }

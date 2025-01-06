@@ -57,9 +57,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         setState(() {
           _userProfile = userProfile;
           _isLoading = false;
-          if (_isUserContractor == null) {
-            _isUserContractor = ApiService.isContractor(userProfile);
-          }
+          _isUserContractor ??= ApiService.isContractor(userProfile);
         });
       }
     } catch (e) {

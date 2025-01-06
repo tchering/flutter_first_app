@@ -11,6 +11,9 @@ class Task {
   final double? proposedPrice;
   final String? workProgress;
   final Map<String, dynamic> contractor;
+  final double? latitude;
+  final double? longitude;
+  final String? address;
 
   Task({
     required this.id,
@@ -25,6 +28,9 @@ class Task {
     this.proposedPrice,
     this.workProgress,
     required this.contractor,
+    this.latitude,
+    this.longitude,
+    this.address,
   });
 
   String get contractorName => contractor['company_name'] ?? '';
@@ -45,6 +51,9 @@ class Task {
           double.parse(json['proposed_price'].toString()) : null,
       workProgress: json['work_progress'],
       contractor: json['contractor'] ?? {},
+      latitude: json['latitude']?.toDouble(),
+      longitude: json['longitude']?.toDouble(),
+      address: json['address'],
     );
   }
 }
