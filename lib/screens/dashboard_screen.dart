@@ -582,7 +582,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => TaskListScreen(
+                            builder: (context) => const TaskListScreen(
                               status: 'all',
                               isContractor: false,
                             ),

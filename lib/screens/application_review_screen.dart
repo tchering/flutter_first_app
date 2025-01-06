@@ -101,7 +101,7 @@ class _ApplicationReviewScreenState extends State<ApplicationReviewScreen> {
       });
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Task price updated successfully')),
+          const SnackBar(content: Text('Task price updated successfully')),
         );
       }
       setState(() {
@@ -120,36 +120,36 @@ class _ApplicationReviewScreenState extends State<ApplicationReviewScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Review Application'),
+        title: const Text('Review Application'),
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : application == null
-              ? Center(child: Text('Application not found'))
+              ? const Center(child: Text('Application not found'))
               : SingleChildScrollView(
                   child: Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Task Details Card
                         Card(
                           child: Padding(
-                            padding: EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(16),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   'Task Details',
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(height: 16),
+                                const SizedBox(height: 16),
                                 _buildInfoRow(
                                   'Site',
                                   widget.taskDetails['site_name'] ?? 'N/A',
@@ -174,7 +174,7 @@ class _ApplicationReviewScreenState extends State<ApplicationReviewScreen> {
                                               widget.taskDetails['end_date']))
                                       : 'Not set',
                                 ),
-                                SizedBox(height: 16),
+                                const SizedBox(height: 16),
                                 Form(
                                   key: _formKey,
                                   child: Row(
@@ -185,7 +185,7 @@ class _ApplicationReviewScreenState extends State<ApplicationReviewScreen> {
                                                 controller: _priceController,
                                                 keyboardType:
                                                     TextInputType.number,
-                                                decoration: InputDecoration(
+                                                decoration: const InputDecoration(
                                                   labelText: 'Task Budget (€)',
                                                   border: OutlineInputBorder(),
                                                 ),
@@ -214,12 +214,12 @@ class _ApplicationReviewScreenState extends State<ApplicationReviewScreen> {
                                       ),
                                       if (_isEditing)
                                         IconButton(
-                                          icon: Icon(Icons.check),
+                                          icon: const Icon(Icons.check),
                                           onPressed: _updateTaskPrice,
                                         )
                                       else
                                         IconButton(
-                                          icon: Icon(Icons.edit),
+                                          icon: const Icon(Icons.edit),
                                           onPressed: () =>
                                               setState(() => _isEditing = true),
                                         ),
@@ -230,22 +230,22 @@ class _ApplicationReviewScreenState extends State<ApplicationReviewScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 24),
+                        const SizedBox(height: 24),
                         // Subcontractor Details Card
                         Card(
                           child: Padding(
-                            padding: EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(16),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   'Subcontractor Details',
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(height: 16),
+                                const SizedBox(height: 16),
                                 _buildInfoRow(
                                   'Name',
                                   application!['subcontractor_name'] ?? 'N/A',
@@ -276,16 +276,16 @@ class _ApplicationReviewScreenState extends State<ApplicationReviewScreen> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(height: 16),
-                                      Text(
+                                      const SizedBox(height: 16),
+                                      const Text(
                                         'Message',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      SizedBox(height: 8),
+                                      const SizedBox(height: 8),
                                       Container(
-                                        padding: EdgeInsets.all(12),
+                                        padding: const EdgeInsets.all(12),
                                         decoration: BoxDecoration(
                                           color: Colors.grey[100],
                                           borderRadius: BorderRadius.circular(8),
@@ -298,7 +298,7 @@ class _ApplicationReviewScreenState extends State<ApplicationReviewScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 24),
+                        const SizedBox(height: 24),
                         // Action Buttons
                         if (application!['status'] == 'pending')
                           Row(
@@ -309,21 +309,21 @@ class _ApplicationReviewScreenState extends State<ApplicationReviewScreen> {
                                       _updateApplicationStatus('approved'),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.green,
-                                    padding: EdgeInsets.symmetric(vertical: 16),
+                                    padding: const EdgeInsets.symmetric(vertical: 16),
                                   ),
-                                  child: Text('APPROVE'),
+                                  child: const Text('APPROVE'),
                                 ),
                               ),
-                              SizedBox(width: 16),
+                              const SizedBox(width: 16),
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () =>
                                       _updateApplicationStatus('rejected'),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.red,
-                                    padding: EdgeInsets.symmetric(vertical: 16),
+                                    padding: const EdgeInsets.symmetric(vertical: 16),
                                   ),
-                                  child: Text('REJECT'),
+                                  child: const Text('REJECT'),
                                 ),
                               ),
                             ],
@@ -337,7 +337,7 @@ class _ApplicationReviewScreenState extends State<ApplicationReviewScreen> {
 
   Widget _buildInfoRow(String label, String value) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -354,7 +354,7 @@ class _ApplicationReviewScreenState extends State<ApplicationReviewScreen> {
           Expanded(
             child: Text(
               value,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w500,
               ),
             ),

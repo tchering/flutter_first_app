@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../models/task.dart';
 import '../services/api_service.dart';
 import 'task_detail_screen.dart'; // Import TaskDetailScreen

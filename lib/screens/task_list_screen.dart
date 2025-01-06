@@ -79,7 +79,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
           maxChildSize: 0.95,
           builder: (_, controller) {
             return Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
@@ -87,28 +87,28 @@ class _TaskListScreenState extends State<TaskListScreen> {
                 children: [
                   // Header with back button
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.05),
                           blurRadius: 4,
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),
                     child: Row(
                       children: [
                         IconButton(
-                          icon: Icon(Icons.arrow_back),
+                          icon: const Icon(Icons.arrow_back),
                           onPressed: () => Navigator.pop(context),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Text(
                           'Applications for ${task['site_name']}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -122,20 +122,20 @@ class _TaskListScreenState extends State<TaskListScreen> {
                       future: ApiService.getTaskApplications(task['id']),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(child: CircularProgressIndicator());
                         }
                         if (snapshot.hasError) {
-                          return Center(child: Text('Error loading applications'));
+                          return const Center(child: Text('Error loading applications'));
                         }
                         final applications = snapshot.data as List<dynamic>;
                         return ListView.builder(
                           controller: controller,
-                          padding: EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(16),
                           itemCount: applications.length,
                           itemBuilder: (context, index) {
                             final application = applications[index];
                             return Card(
-                              margin: EdgeInsets.only(bottom: 16),
+                              margin: const EdgeInsets.only(bottom: 16),
                               child: InkWell(
                                 onTap: () {
                                   Navigator.push(
@@ -150,7 +150,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                   );
                                 },
                                 child: Padding(
-                                  padding: EdgeInsets.all(16),
+                                  padding: const EdgeInsets.all(16),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
@@ -158,16 +158,16 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                         children: [
                                           CircleAvatar(
                                             backgroundColor: Colors.grey[200],
-                                            child: Icon(Icons.person),
+                                            child: const Icon(Icons.person),
                                           ),
-                                          SizedBox(width: 12),
+                                          const SizedBox(width: 12),
                                           Expanded(
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   application['subcontractor_name'] ?? 'Unknown',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 16,
                                                   ),
@@ -183,7 +183,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                             ),
                                           ),
                                           Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                             decoration: BoxDecoration(
                                               color: _getStatusColor(application['status']).withOpacity(0.1),
                                               borderRadius: BorderRadius.circular(20),
@@ -200,11 +200,11 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                         ],
                                       ),
                                       if (application['proposed_price'] != null) ...[
-                                        SizedBox(height: 12),
+                                        const SizedBox(height: 12),
                                         Row(
                                           children: [
                                             Icon(Icons.euro, size: 16, color: Colors.grey[600]),
-                                            SizedBox(width: 4),
+                                            const SizedBox(width: 4),
                                             Text(
                                               'Proposed: ${NumberFormat.currency(locale: 'fr_FR', symbol: '€').format(double.parse(application['proposed_price'].toString()))}',
                                               style: TextStyle(
@@ -240,12 +240,12 @@ class _TaskListScreenState extends State<TaskListScreen> {
       appBar: AppBar(
         title: Text(_getTitle()),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : _errorMessage != null
               ? Center(child: Text(_errorMessage!))
               : tasks.isEmpty
@@ -254,7 +254,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.folder_open, size: 80, color: Colors.grey[300]),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           Text(
                             'No ${widget.status} tasks found',
                             style: TextStyle(
@@ -266,22 +266,26 @@ class _TaskListScreenState extends State<TaskListScreen> {
                       ),
                     )
                   : ListView.builder(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       itemCount: tasks.length,
                       itemBuilder: (context, index) {
                         final task = tasks[index];
                         return Card(
-                          margin: EdgeInsets.only(bottom: 16),
+                          margin: const EdgeInsets.only(bottom: 16),
                           child: InkWell(
                             onTap: () {
-                              Navigator.pushNamed(
+                              Navigator.push(
                                 context,
-                                '/task_detail',
-                                arguments: task['id'],
+                                MaterialPageRoute(
+                                  builder: (context) => TaskDetailScreen(
+                                    taskId: task['id'],
+                                    isContractor: widget.isContractor,
+                                  ),
+                                ),
                               );
                             },
                             child: Padding(
-                              padding: EdgeInsets.all(16),
+                              padding: const EdgeInsets.all(16),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -293,12 +297,12 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                           children: [
                                             Text(
                                               task['site_name'] ?? 'Unnamed Task',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 18,
                                               ),
                                             ),
-                                            SizedBox(height: 4),
+                                            const SizedBox(height: 4),
                                             Text(
                                               '${task['street']}, ${task['city']}',
                                               style: TextStyle(
@@ -312,7 +316,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                       if (widget.isContractor && task['applications_count'] > 0)
                                         TextButton.icon(
                                           onPressed: () => _showApplicationsDialog(context, task),
-                                          icon: Icon(Icons.people),
+                                          icon: const Icon(Icons.people),
                                           label: Text('${task['applications_count']} Applications'),
                                           style: TextButton.styleFrom(
                                             backgroundColor: Colors.blue.shade50,
@@ -324,11 +328,11 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                         ),
                                     ],
                                   ),
-                                  SizedBox(height: 12),
+                                  const SizedBox(height: 12),
                                   Row(
                                     children: [
                                       Icon(Icons.euro, size: 16, color: Colors.grey[600]),
-                                      SizedBox(width: 4),
+                                      const SizedBox(width: 4),
                                       Text(
                                         NumberFormat.currency(
                                           locale: 'fr_FR',
@@ -339,9 +343,9 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                           color: Colors.grey[800],
                                         ),
                                       ),
-                                      Spacer(),
+                                      const Spacer(),
                                       Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                         decoration: BoxDecoration(
                                           color: _getStatusColor(task['status']).withOpacity(0.1),
                                           borderRadius: BorderRadius.circular(20),
