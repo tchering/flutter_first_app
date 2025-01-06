@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../services/api_service.dart';
+import '../services/auth_service.dart';
 import '../screens/task_list_screen.dart';
 import '../screens/job_search_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
-  final bool isContractor;
-  
+  final bool? isContractor;
+  final bool fromNavBar;
+
   const DashboardScreen({
     super.key,
-    this.isContractor = true,
+    this.isContractor,
+    this.fromNavBar = false,
   });
 
   @override
@@ -23,40 +26,67 @@ class _DashboardScreenState extends State<DashboardScreen> {
   bool _isLoading = true;
   String? _errorMessage;
   Map<String, dynamic> _projectStatistics = {};
+  bool? _isUserContractor;
 
   @override
   void initState() {
     super.initState();
+    _initializeUserRole();
     _fetchUserProfile();
     _fetchProjectStatistics();
+  }
+
+  Future<void> _initializeUserRole() async {
+    if (widget.isContractor != null) {
+      _isUserContractor = widget.isContractor;
+      return;
+    }
+
+    final userData = await AuthService.getUserData();
+    if (mounted) {
+      setState(() {
+        _isUserContractor = ApiService.isContractor(userData);
+      });
+    }
   }
 
   Future<void> _fetchUserProfile() async {
     try {
       final userProfile = await ApiService.fetchUserProfile();
-      setState(() {
-        _userProfile = userProfile;
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _userProfile = userProfile;
+          _isLoading = false;
+          if (_isUserContractor == null) {
+            _isUserContractor = ApiService.isContractor(userProfile);
+          }
+        });
+      }
     } catch (e) {
-      setState(() {
-        _errorMessage = e.toString();
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _errorMessage = e.toString();
+          _isLoading = false;
+        });
+      }
     }
   }
 
   Future<void> _fetchProjectStatistics() async {
     try {
       final projectStatistics = await ApiService.fetchProjectStatistics();
-      setState(() {
-        _projectStatistics = projectStatistics;
-      });
+      if (mounted) {
+        setState(() {
+          _projectStatistics = projectStatistics;
+        });
+      }
     } catch (e) {
-      print('Error fetching project statistics: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load project statistics: $e')),
-      );
+      if (mounted) {
+        print('Error fetching project statistics: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load project statistics: $e')),
+        );
+      }
     }
   }
 
@@ -64,7 +94,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.isContractor ? tr('contractor_dashboard') : tr('subcontractor_dashboard')),
+        title: Text(_isUserContractor ?? false ? tr('contractor_dashboard') : tr('subcontractor_dashboard')),
       ),
       body: _isLoading
         ? const Center(child: CircularProgressIndicator())
@@ -122,7 +152,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                widget.isContractor 
+                _isUserContractor ?? false 
                   ? _buildContractorStats() 
                   : _buildSubcontractorStats(),
                 const SizedBox(height: 16),
@@ -160,7 +190,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: 8),
             Chip(
               label: Text(
-                _userProfile['position'] ?? (widget.isContractor ? tr('contractor') : tr('subcontractor')),
+                _userProfile['position'] ?? (_isUserContractor ?? false ? tr('contractor') : tr('subcontractor')),
                 style: const TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.blue,
@@ -416,7 +446,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             MaterialPageRoute(
               builder: (context) => TaskListScreen(
                 status: status, 
-                isContractor: widget.isContractor
+                isContractor: _isUserContractor ?? false
               )
             )
           );
@@ -525,14 +555,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.isContractor ? tr('quick_actions') : tr('available_actions'),
+              _isUserContractor ?? false ? tr('quick_actions') : tr('available_actions'),
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 16),
-            if (widget.isContractor)
+            if (_isUserContractor ?? false)
               Row(
                 children: [
                   Expanded(

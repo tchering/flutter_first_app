@@ -7,6 +7,20 @@ class ApiService {
   static const String baseUrl = 'http://localhost:3000/api';
   static const String tokenKey = 'auth_token';
 
+  static bool isContractor(Map<String, dynamic>? userData) {
+    if (userData == null) return false;
+    final role = userData['role']?.toString().toLowerCase();
+    final position = userData['position']?.toString().toLowerCase();
+    return role == 'contractor' || position == 'contractor';
+  }
+
+  static bool isSubcontractor(Map<String, dynamic>? userData) {
+    if (userData == null) return false;
+    final role = userData['role']?.toString().toLowerCase();
+    final position = userData['position']?.toString().toLowerCase();
+    return role == 'subcontractor' || position == 'subcontractor';
+  }
+
   static Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       final response = await http.post(

@@ -11,6 +11,7 @@ import '../widgets/language_selector.dart';
 import '../services/auth_service.dart';
 import '../services/api_service.dart';
 import 'dashboard_screen.dart';
+import 'map_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   final Function(Locale) onLocaleChange;
@@ -71,6 +72,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       );
     }
 
+    final bool isLoggedIn = _userData != null;
+    final bool isContractor = ApiService.isContractor(_userData);
+
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
@@ -85,6 +89,49 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             isDark: _currentIndex == 1,
           ),
           const SizedBox(width: 10),
+        ],
+      ),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          HomeScreen(),
+          if (isLoggedIn) DashboardScreen(isContractor: isContractor, fromNavBar: true),
+          if (isLoggedIn) const MapScreen(),
+          AboutScreen(),
+          TeamScreen(),
+          if (!isLoggedIn) LoginPage(),
+          if (!isLoggedIn) SignupScreen(),
+          if (isLoggedIn) ProfileScreen(),
+          if (isLoggedIn) SettingsScreen(),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) => setState(() => _currentIndex = index),
+        type: BottomNavigationBarType.fixed,
+        items: [
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.home),
+            label: tr('navigation.home'),
+          ),
+          if (isLoggedIn)
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.dashboard),
+              label: tr('navigation.dashboard'),
+            ),
+          if (isLoggedIn)
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.map),
+              label: 'Map',
+            ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.info),
+            label: tr('navigation.about'),
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.group),
+            label: tr('navigation.team'),
+          ),
         ],
       ),
       drawer: Drawer(
@@ -191,7 +238,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => DashboardScreen(
-                        isContractor: _userData!['position'].toLowerCase() == 'contractor',
+                        isContractor: ApiService.isContractor(_userData),
+                        fromNavBar: false,
                       ),
                     ),
                   );
@@ -232,11 +280,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ],
         ),
       ),
-      body: _userData == null
-          ? const HomeScreen()
-          : DashboardScreen(
-              isContractor: _userData!['position'].toLowerCase() == 'contractor',
-            ),
     );
   }
 }
