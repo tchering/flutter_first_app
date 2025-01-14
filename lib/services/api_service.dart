@@ -188,9 +188,11 @@ class ApiService {
       print('Project Statistics Response status: ${response.statusCode}');
       print('Project Statistics Response headers: ${response.headers}');
       print('Project Statistics Response body: ${response.body}');
+      print('Project Statistics Response parsed: ${jsonDecode(response.body)}');
 
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        final data = jsonDecode(response.body);
+        return data;
       } else {
         Map<String, dynamic> errorData;
         try {
@@ -215,11 +217,16 @@ class ApiService {
       throw Exception('No authentication token found');
     }
 
-    final position = isContractor ? 'contractor' : 'subcontractor';
-    print('Fetching tasks with URI: $baseUrl/tasks?status=$status&position=$position');
+    final queryParams = {
+      'status': status,
+      'is_contractor': isContractor.toString(),
+    };
+    
+    final uri = Uri.parse('$baseUrl/tasks').replace(queryParameters: queryParams);
+    print('Fetching tasks with URI: $uri');
 
     final response = await http.get(
-      Uri.parse('$baseUrl/tasks?status=$status&position=$position'),
+      uri,
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
@@ -539,7 +546,7 @@ class ApiService {
       // Build the URL with proper query parameters
       final queryParams = {
         'status': status,
-        'position': isContractor ? 'contractor' : 'sub-contractor',
+        'is_contractor': isContractor.toString(),
       };
       
       final uri = Uri.parse('$baseUrl/tasks').replace(queryParameters: queryParams);
